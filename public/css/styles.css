@@ -76,11 +76,15 @@ img.logo-monogram.xl{height:110px}
   gap:12px;
 }
 img.logo-monogram{
-  filter:drop-shadow(0 1px 6px rgba(0,0,0,.3));
-  transition:filter .35s ease, height .35s ease;
+  transition:height .35s ease, opacity .35s ease;
 }
-img.logo-monogram.large{height:70px;filter:none}
-img.logo-monogram.xl{height:110px;filter:none}
+img.logo-monogram.large{height:70px}
+img.logo-monogram.xl{height:72px}
+/* dos variantes de logo: light (cream) para fondo oscuro, dark (gold) para fondo cream */
+.logo .logo-light{display:inline-block}
+.logo .logo-dark{display:none}
+.nav.scrolled .logo-light{display:none}
+.nav.scrolled .logo-dark{display:inline-block}
 .logo-word{
   font-family:'Cormorant Garamond',serif;
   font-size:19px;
@@ -686,12 +690,34 @@ section{padding:130px 56px;position:relative}
 
 /* ============ FOOTER ============ */
 footer{background:var(--cream);padding:140px 56px 50px;color:var(--text)}
-.footer-logo{text-align:center;margin-bottom:70px}
-.footer-logo .logo-monogram{color:var(--gold-soft);display:block;line-height:1}
-.footer-logo .logo-word{color:var(--text)}
+.footer-logo{text-align:center;margin-bottom:80px}
+.footer-brand{
+  display:inline-flex;
+  align-items:center;
+  gap:22px;
+  justify-content:center;
+}
+.footer-logo img.logo-monogram.xl{
+  height:72px;
+  width:auto;
+  display:inline-block;
+  filter:none;
+}
+.footer-logo .logo-word.big{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;
+  letter-spacing:.44em;
+  color:var(--text);
+  margin:0;
+  font-weight:500;
+  text-shadow:none;
+  display:inline-block;
+  text-align:center;
+  line-height:1;
+}
 .footer-dot{
-  width:12px;height:12px;
-  margin:28px auto 0;
+  width:11px;height:11px;
+  margin:32px auto 0;
   background:var(--gold-soft);
   transform:rotate(45deg);
 }
