@@ -25,3 +25,20 @@ if (newsForm) {
     newsForm.reset();
   });
 }
+
+// Nav scrolled state - transparent sobre hero, sticky cream al scrollear
+const nav = document.querySelector('.nav');
+const hero = document.querySelector('.hero');
+if (nav && hero) {
+  const update = () => {
+    // Umbral: cuando el hero deja de verse (80% del alto del hero)
+    const threshold = hero.offsetHeight * 0.75;
+    if (window.scrollY > threshold) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
