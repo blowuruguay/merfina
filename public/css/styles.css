@@ -735,19 +735,44 @@ footer{background:var(--cream);padding:140px 56px 50px;color:var(--text)}
   letter-spacing:.38em;
   text-transform:uppercase;
   color:var(--gold);
-  margin-bottom:30px;
+  margin-bottom:34px;
   font-weight:400;
   font-family:'Montserrat',sans-serif;
 }
-.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:18px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:20px}
 .footer-col a{
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;
+  font-family:'Montserrat',sans-serif;
+  font-size:14px;
   color:var(--text);
-  font-weight:500;
+  font-weight:300;
+  letter-spacing:.01em;
   transition:color .25s;
 }
 .footer-col a:hover{color:var(--gold)}
+
+.footer-bottom{
+  max-width:1320px;
+  margin:70px auto 0;
+  padding-top:30px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  color:var(--text-soft);
+  font-weight:300;
+  letter-spacing:.02em;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.footer-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--text-soft);
+  font-weight:400;
+}
 
 /* ============ WHATSAPP FLOAT ============ */
 .wa{
