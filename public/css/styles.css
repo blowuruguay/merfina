@@ -19,20 +19,14 @@ a{color:inherit;text-decoration:none}
 .eyebrow{font-family:'Montserrat',sans-serif;font-size:10.5px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);font-weight:400}
 
 /* ============ LOGO MONOGRAM ============ */
-.logo-monogram{
+img.logo-monogram{
   display:inline-block;
-  font-family:'Cormorant Garamond',serif;
-  color:var(--gold);
-  font-weight:500;
-  line-height:1;
-  position:relative;
-  font-size:40px;
-  letter-spacing:-.06em;
+  height:42px;
+  width:auto;
+  vertical-align:middle;
 }
-.logo-monogram .m-letter{display:inline-block}
-.logo-monogram .f-letter{display:inline-block;margin-left:-.28em;color:var(--gold-deep)}
-.logo-monogram.large{font-size:58px}
-.logo-monogram.xl{font-size:92px}
+img.logo-monogram.large{height:70px}
+img.logo-monogram.xl{height:110px}
 
 /* ============ TOP BANNER ============ */
 .topbar{
