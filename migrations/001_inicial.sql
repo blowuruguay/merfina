@@ -171,8 +171,8 @@ insert into categorias (id, nombre, descripcion, orden) values
   ('otros','Otras piezas','Broches, prendedores y ediciones especiales.',3);
 
 insert into ajustes (clave, valor) values
-  ('whatsapp','"https://wa.me/59899000000"'),
-  ('telefono','"099 000 000"'),
+  ('whatsapp','"https://wa.me/59891900341"'),
+  ('telefono','"091 900 341"'),
   ('email','"hola@merfina.uy"'),
   ('instagram','"https://instagram.com/merfinajoyas"'),
   ('envio_montevideo','190'),
