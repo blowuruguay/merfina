@@ -195,19 +195,31 @@ img.logo-monogram.xl{height:72px}
 
 .btn{
   display:inline-block;
-  padding:17px 42px;
-  font-size:10.5px;
-  letter-spacing:.34em;
+  padding:22px 54px;
+  font-size:11px;
+  letter-spacing:.42em;
   text-transform:uppercase;
   font-weight:400;
-  border:1px solid rgba(255,255,255,.9);
-  color:#fff;
+  border:1px solid rgba(248,242,230,.9);
+  color:#F8F2E6;
   background:transparent;
   cursor:pointer;
   transition:all .3s;
   font-family:'Montserrat',sans-serif;
+  text-align:center;
+  min-width:260px;
 }
-.btn:hover{background:#fff;color:var(--text)}
+.btn:hover{background:rgba(248,242,230,.12);color:#fff;border-color:#fff}
+.btn-filled{
+  background:#F4EDE2;
+  color:var(--text);
+  border-color:#F4EDE2;
+}
+.btn-filled:hover{
+  background:transparent;
+  color:#F8F2E6;
+  border-color:#F8F2E6;
+}
 .btn-dark{border-color:var(--text);color:var(--text)}
 .btn-dark:hover{background:var(--text);color:var(--cream)}
 
