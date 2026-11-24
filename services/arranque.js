@@ -100,6 +100,30 @@ async function crearAdmin() {
   console.log(`[arranque] Usuario del panel listo: ${rows[0].email}`);
 }
 
+async function sincronizarDescripciones() {
+  // Para los productos del seed inicial que ya están en la base con
+  // descripción vacía, les carga la descripción del catalogo-inicial.json.
+  // Idempotente: solo actualiza cuando descripción es NULL o cadena vacía.
+  const ruta = path.join(__dirname, '../tools/catalogo-inicial.json');
+  if (!fs.existsSync(ruta)) return;
+  const datos = JSON.parse(fs.readFileSync(ruta, 'utf8'));
+
+  let actualizados = 0;
+  for (const p of datos) {
+    if (!p.descripcion) continue;
+    const r = await db.query(
+      `update productos
+          set descripcion = $1
+        where slug = $2
+          and (descripcion is null or descripcion = '')`,
+      [p.descripcion, p.slug]);
+    if (r.rowCount > 0) actualizados++;
+  }
+  if (actualizados > 0) {
+    console.log(`[arranque] Descripciones sincronizadas: ${actualizados}`);
+  }
+}
+
 async function limpiarCategorias() {
   // Idempotente: solo actúa si las tablas existen y hace falta.
   try {
@@ -131,6 +155,7 @@ async function preparar() {
     await crearAdmin();
     await importarCatalogo();
     await limpiarCategorias();
+    await sincronizarDescripciones();
     estado.ok = true;
   } catch (err) {
     console.error('[arranque] Falló:', err.message);

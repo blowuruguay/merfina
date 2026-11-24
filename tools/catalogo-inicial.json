@@ -10,7 +10,8 @@
     "imagenes": [
       "/img/productos/alma/1.jpg",
       "/img/productos/alma/2.jpg"
-    ]
+    ],
+    "descripcion": "La pieza que elige quien sabe que lo esencial no se lleva encima: se emana. Delicada, íntima, inconfundible."
   },
   {
     "slug": "amapola",
@@ -22,7 +23,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/amapola/1.jpg"
-    ]
+    ],
+    "descripcion": "Un rojo que no pide permiso. Flor rebelde y femenina, lista para transformar una camisa blanca en un gesto de autor."
   },
   {
     "slug": "dalia-celeste",
@@ -35,7 +37,8 @@
     "imagenes": [
       "/img/productos/dalia-celeste/1.jpg",
       "/img/productos/dalia-celeste/2.jpg"
-    ]
+    ],
+    "descripcion": "Un cielo despejado abrochado en los botones. Su azul suave acompaña con elegancia los días largos y las noches tranquilas."
   },
   {
     "slug": "ebano",
@@ -48,7 +51,8 @@
     "imagenes": [
       "/img/productos/ebano/1.jpg",
       "/img/productos/ebano/2.jpg"
-    ]
+    ],
+    "descripcion": "Lo oscuro también es joya. Pieza nocturna, de carácter, pensada para las camisas que piden contraste y presencia."
   },
   {
     "slug": "felino",
@@ -61,7 +65,8 @@
     "imagenes": [
       "/img/productos/felino/1.jpg",
       "/img/productos/felino/2.jpg"
-    ]
+    ],
+    "descripcion": "Sofisticación con garra. Un detalle de línea limpia y actitud, para looks que se mueven con seguridad."
   },
   {
     "slug": "gardenia",
@@ -74,7 +79,8 @@
     "imagenes": [
       "/img/productos/gardenia/1.jpg",
       "/img/productos/gardenia/2.jpg"
-    ]
+    ],
+    "descripcion": "Delicada como un pétalo recién abierto. Suma pureza y luz al look más clásico."
   },
   {
     "slug": "latido",
@@ -86,7 +92,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/latido/1.jpg"
-    ]
+    ],
+    "descripcion": "Un pequeño corazón que no pasa desapercibido. Romántica sin exceso, perfecta para los días que piden algo más cerca del pecho."
   },
   {
     "slug": "magnolia",
@@ -100,7 +107,8 @@
       "/img/productos/magnolia/1.jpg",
       "/img/productos/magnolia/2.jpg",
       "/img/productos/magnolia/3.jpg"
-    ]
+    ],
+    "descripcion": "Flor noble en escala joya. Pétalos que redondean la silueta con gracia y aportan un gesto de primavera."
   },
   {
     "slug": "nazar",
@@ -113,7 +121,8 @@
     "imagenes": [
       "/img/productos/nazar/1.jpg",
       "/img/productos/nazar/2.jpg"
-    ]
+    ],
+    "descripcion": "Un guiño al ojo turco que protege y acompaña. Simbólica y sutil, para quienes buscan sentido en cada detalle."
   },
   {
     "slug": "noir",
@@ -125,7 +134,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/noir/1.jpg"
-    ]
+    ],
+    "descripcion": "Elegancia pura en clave oscura. La respuesta cuando la ocasión pide una sola joya que diga todo."
   },
   {
     "slug": "dalia-rosa",
@@ -137,7 +147,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/dalia-rosa/1.jpg"
-    ]
+    ],
+    "descripcion": "Un rosa que se sostiene solo. Floral, femenina y luminosa, suma dulzura sin perder carácter."
   },
   {
     "slug": "corbata-cleo",
@@ -149,7 +160,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/corbata-cleo/1.jpg"
-    ]
+    ],
+    "descripcion": "Inspirada en el porte de una reina. Línea clásica y acabado que transforma la camisa más simple en un gesto decidido."
   },
   {
     "slug": "corbata-ambar",
@@ -161,7 +173,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/corbata-ambar/1.jpg"
-    ]
+    ],
+    "descripcion": "Un dorado cálido que recuerda la luz del final de la tarde. Para looks que piden una joya con temperatura."
   },
   {
     "slug": "corbata-gala",
@@ -173,7 +186,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/corbata-gala/1.jpg"
-    ]
+    ],
+    "descripcion": "Pensada para las ocasiones que se guardan en la memoria. Estructura prolija, acabado noble, presencia justa."
   },
   {
     "slug": "corbata-lila",
@@ -187,7 +201,8 @@
       "/img/productos/corbata-lila/1.jpg",
       "/img/productos/corbata-lila/2.jpg",
       "/img/productos/corbata-lila/3.jpg"
-    ]
+    ],
+    "descripcion": "Un violeta suave que se lleva de día y de noche. Delicada como la flor que la nombra."
   },
   {
     "slug": "corbata-moka",
@@ -199,7 +214,8 @@
     "destacado": false,
     "imagenes": [
       "/img/productos/corbata-moka/1.jpg"
-    ]
+    ],
+    "descripcion": "Un neutro cálido, sofisticado, fácil de combinar. La corbata joya que entra en todos los armarios."
   },
   {
     "slug": "corbata-nina",
@@ -212,6 +228,7 @@
     "imagenes": [
       "/img/productos/corbata-nina/1.jpg",
       "/img/productos/corbata-nina/2.jpg"
-    ]
+    ],
+    "descripcion": "Un gesto dulce, femenino, con alma de niña bien. Para quien quiere elegancia con una sonrisa."
   }
 ]
