@@ -47,17 +47,28 @@
   .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   @media (max-width: 500px) { .row, .row-3 { grid-template-columns: 1fr; } }
 
-  /* Opciones de envío */
-  .envios { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-  .env-opt { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 2px; cursor: pointer; background: #fff; transition: all .2s; }
-  .env-opt:hover { border-color: #B89766; }
-  .env-opt.on { border-color: #141210; background: var(--pale); }
-  .env-opt input { width: auto; margin: 0; accent-color: #141210; }
-  .env-opt .info { flex: 1; }
-  .env-opt .nom { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #141210; }
-  .env-opt .det { color: var(--soft); font-size: 13px; }
-  .env-opt .costo { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #8F7349; font-style: italic; }
-  .env-opt .costo.gratis { color: #4a8f5c; font-style: normal; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; }
+  /* Opciones (envío + pago) */
+  .opts { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .opt { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 2px; cursor: pointer; background: #fff; transition: all .2s; }
+  .opt:hover { border-color: #B89766; }
+  .opt.on { border-color: #141210; background: var(--pale); }
+  .opt input { width: auto; margin: 0; accent-color: #141210; }
+  .opt .info { flex: 1; }
+  .opt .nom { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #141210; }
+  .opt .det { color: var(--soft); font-size: 13px; }
+  .opt .costo { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #8F7349; font-style: italic; }
+  .opt .costo.gratis { color: #4a8f5c; font-style: normal; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; }
+  .opt .ic-pago { color: #8F7349; }
+  .opt .ic-pago svg { width: 22px; height: 22px; }
+
+  /* Sub-opciones (modalidad interior) */
+  .sub-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  @media (max-width: 500px) { .sub-opts { grid-template-columns: 1fr; } }
+  .sub-opt { padding: 14px 16px; border: 1px solid var(--rule); border-radius: 2px; background: #fff; cursor: pointer; text-align: center; transition: all .2s; }
+  .sub-opt:hover { border-color: #B89766; }
+  .sub-opt.on { border-color: #141210; background: var(--pale); }
+  .sub-opt .nom { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #141210; }
+  .sub-opt .det { font-size: 11px; color: var(--soft); letter-spacing: .06em; }
 
   /* Resumen */
   .co-resumen { background: #FBF7F0; border: 1px solid var(--rule); padding: 32px; border-radius: 2px; position: sticky; top: 20px; align-self: start; }
@@ -109,13 +120,20 @@
 </main>
 
 <script>
-const $ = s => document.querySelector(s);
+const DEPARTAMENTOS = [
+  'Artigas','Canelones','Cerro Largo','Colonia','Durazno','Flores',
+  'Florida','Lavalleja','Maldonado','Montevideo','Paysandú','Río Negro',
+  'Rivera','Rocha','Salto','San José','Soriano','Tacuarembó','Treinta y Tres'
+];
 
+const $ = s => document.querySelector(s);
 function precio(n) { return '$ ' + Number(n || 0).toLocaleString('es-UY'); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 let opciones = [];
 let envioSeleccionado = 'retiro';
+let modalidadInterior = 'domicilio';
+let metodoPago = 'mercadopago';
 let gratisDesde = 0;
 let cart = [];
 
@@ -126,7 +144,6 @@ async function iniciar() {
     return;
   }
 
-  // Cargamos opciones de envío
   try {
     const r = await fetch('/api/checkout/opciones-envio');
     const data = await r.json();
@@ -136,7 +153,7 @@ async function iniciar() {
     opciones = [
       { id: 'retiro',     nombre: 'Retiro en showroom', detalle: 'Coordinamos por WhatsApp',       costo: 0 },
       { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: 190 },
-      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC, 2 a 3 días hábiles', costo: 290 }
+      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles', costo: 290 }
     ];
   }
 
@@ -160,11 +177,15 @@ function render() {
   const env = costoEnvio();
   const total = sub + env;
 
+  const deptOptions = DEPARTAMENTOS.map(d =>
+    `<option value="${d}" ${envioSeleccionado === 'montevideo' && d === 'Montevideo' ? 'selected' : ''}>${d}</option>`
+  ).join('');
+
   $('#main').innerHTML = `
     <div class="co-wrap">
       <div class="co-col">
         <h2>Finalizar compra</h2>
-        <p class="sub">Completá los datos y pagás con Mercado Pago.</p>
+        <p class="sub">Completá los datos y elegí cómo preferís pagar.</p>
 
         <form id="form-co" class="co-section" onsubmit="event.preventDefault(); return false;">
           <h3><span class="n">1</span> Datos de contacto</h3>
@@ -182,12 +203,12 @@ function render() {
 
         <div class="co-section">
           <h3><span class="n">2</span> Envío</h3>
-          <div class="envios" id="envios">
+          <div class="opts" id="envios">
             ${opciones.map(op => {
               const gratis = op.costo === 0 ? 'Gratis' : (gratisDesde > 0 && sub >= gratisDesde ? 'Gratis' : precio(op.costo));
               const isGratis = gratis === 'Gratis';
               return `
-              <label class="env-opt ${envioSeleccionado === op.id ? 'on' : ''}" data-env="${op.id}">
+              <label class="opt ${envioSeleccionado === op.id ? 'on' : ''}" data-env="${op.id}">
                 <input type="radio" name="envio" value="${op.id}" ${envioSeleccionado === op.id ? 'checked' : ''}>
                 <div class="info">
                   <div class="nom">${esc(op.nombre)}</div>
@@ -197,25 +218,76 @@ function render() {
               </label>`;
             }).join('')}
           </div>
+
           <div id="dir-box" style="display:${envioSeleccionado === 'retiro' ? 'none' : 'block'}">
-            <div class="row">
-              <div><label>Calle y número *</label><input type="text" name="calle" ${envioSeleccionado !== 'retiro' ? 'required' : ''}></div>
-              <div><label>Apto / piso</label><input type="text" name="apto"></div>
+            ${envioSeleccionado === 'interior' ? `
+              <label style="margin-top:22px">¿Cómo preferís recibir el envío?</label>
+              <div class="sub-opts">
+                <div class="sub-opt ${modalidadInterior === 'domicilio' ? 'on' : ''}" data-mod="domicilio">
+                  <div class="nom">Envío a domicilio</div>
+                  <div class="det">Hasta la puerta de tu casa</div>
+                </div>
+                <div class="sub-opt ${modalidadInterior === 'agencia' ? 'on' : ''}" data-mod="agencia">
+                  <div class="nom">Retiro en agencia</div>
+                  <div class="det">DAC — más económico</div>
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="row" style="margin-top:14px">
+              <div>
+                <label>Departamento *</label>
+                <select name="depto" required>
+                  <option value="">—</option>
+                  ${deptOptions}
+                </select>
+              </div>
+              <div>
+                <label>Ciudad o localidad *</label>
+                <input type="text" name="ciudad" required placeholder="Ej: Pocitos, Punta del Este">
+              </div>
             </div>
-            <div class="row-3">
-              <div><label>Barrio / Localidad</label><input type="text" name="barrio"></div>
-              <div><label>Departamento</label><input type="text" name="depto" placeholder="Montevideo"></div>
-              <div><label>Código postal</label><input type="text" name="cp"></div>
-            </div>
-            <div id="agencia-box" style="display:${envioSeleccionado === 'interior' ? 'block' : 'none'}">
-              <label>Agencia DAC más cercana</label>
-              <input type="text" name="agencia" placeholder="Nombre o ciudad">
-            </div>
+
+            ${envioSeleccionado !== 'interior' || modalidadInterior === 'domicilio' ? `
+              <div class="row">
+                <div><label>Calle y número *</label><input type="text" name="calle" required></div>
+                <div><label>Apto / piso</label><input type="text" name="apto"></div>
+              </div>
+              <div class="row">
+                <div><label>Barrio</label><input type="text" name="barrio"></div>
+                <div><label>Código postal</label><input type="text" name="cp"></div>
+              </div>
+            ` : `
+              <label>Agencia DAC más cercana *</label>
+              <input type="text" name="agencia" required placeholder="Nombre o ciudad de la agencia">
+            `}
           </div>
         </div>
 
         <div class="co-section">
-          <h3><span class="n">3</span> Nota (opcional)</h3>
+          <h3><span class="n">3</span> Método de pago</h3>
+          <div class="opts" id="pagos">
+            <label class="opt ${metodoPago === 'mercadopago' ? 'on' : ''}" data-pago="mercadopago">
+              <input type="radio" name="pago" value="mercadopago" ${metodoPago === 'mercadopago' ? 'checked' : ''}>
+              <div class="info">
+                <div class="nom">Mercado Pago</div>
+                <div class="det">Tarjetas de crédito y débito, Mercado Pago</div>
+              </div>
+              <div class="ic-pago"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 7h20v10H2z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 10h20" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+            </label>
+            <label class="opt ${metodoPago === 'transferencia' ? 'on' : ''}" data-pago="transferencia">
+              <input type="radio" name="pago" value="transferencia" ${metodoPago === 'transferencia' ? 'checked' : ''}>
+              <div class="info">
+                <div class="nom">Transferencia bancaria</div>
+                <div class="det">Te damos los datos para transferir y coordinás por WhatsApp</div>
+              </div>
+              <div class="ic-pago"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7l8-4 8 4M4 7v10h16V7M4 7h16M8 11v4M12 11v4M16 11v4"/></svg></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="co-section">
+          <h3><span class="n">4</span> Nota (opcional)</h3>
           <textarea name="nota" placeholder="Para regalo, horario de entrega, lo que necesites avisarnos"></textarea>
         </div>
       </div>
@@ -240,37 +312,57 @@ function render() {
           <div class="ln total"><span>Total</span><span>${precio(total)}</span></div>
         </div>
         <button type="button" class="co-pagar" id="btn-pagar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
-          Pagar con Mercado Pago
+          ${metodoPago === 'mercadopago'
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg> Pagar con Mercado Pago'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7l8-4 8 4M4 7v10h16V7"/></svg> Continuar con transferencia'}
         </button>
-        <div class="co-small">Pago seguro procesado por Mercado Pago</div>
+        <div class="co-small">
+          ${metodoPago === 'mercadopago' ? 'Pago seguro procesado por Mercado Pago' : 'Te damos los datos y coordinamos por WhatsApp'}
+        </div>
         <div class="co-err" id="err"></div>
       </aside>
     </div>`;
 
-  // Cambio de envío
-  document.querySelectorAll('.env-opt').forEach(el => {
-    el.onclick = () => {
-      envioSeleccionado = el.dataset.env;
-      render();
-    };
+  document.querySelectorAll('[data-env]').forEach(el => {
+    el.onclick = () => { envioSeleccionado = el.dataset.env; render(); };
   });
-
-  // Click pagar
+  document.querySelectorAll('[data-mod]').forEach(el => {
+    el.onclick = () => { modalidadInterior = el.dataset.mod; render(); };
+  });
+  document.querySelectorAll('[data-pago]').forEach(el => {
+    el.onclick = () => { metodoPago = el.dataset.pago; render(); };
+  });
   $('#btn-pagar').onclick = pagar;
 }
 
 async function pagar() {
   const form = $('#form-co');
   const fd = new FormData(form);
+  // También incluimos campos del envío que están fuera del form
+  const dir = {
+    calle: document.querySelector('[name=calle]')?.value || '',
+    apto:  document.querySelector('[name=apto]')?.value || '',
+    barrio:document.querySelector('[name=barrio]')?.value || '',
+    depto: document.querySelector('[name=depto]')?.value || '',
+    ciudad:document.querySelector('[name=ciudad]')?.value || '',
+    cp:    document.querySelector('[name=cp]')?.value || '',
+    agencia: document.querySelector('[name=agencia]')?.value || ''
+  };
+  const nota = document.querySelector('[name=nota]')?.value || '';
+
   const err = $('#err');
   err.classList.remove('show');
 
-  // Validación mínima en el front; el backend revalida igual
-  if (!fd.get('nombre')) return mostrarError('Escribí tu nombre');
-  if (!fd.get('email')) return mostrarError('Escribí tu correo');
+  if (!fd.get('nombre'))   return mostrarError('Escribí tu nombre');
+  if (!fd.get('email'))    return mostrarError('Escribí tu correo');
   if (!fd.get('telefono')) return mostrarError('Dejanos un teléfono');
-  if (envioSeleccionado !== 'retiro' && !fd.get('calle')) return mostrarError('Dejanos la dirección del envío');
+  if (envioSeleccionado !== 'retiro') {
+    if (!dir.depto)  return mostrarError('Elegí un departamento');
+    if (!dir.ciudad) return mostrarError('Dejanos la ciudad o localidad');
+    const esAgencia = envioSeleccionado === 'interior' && modalidadInterior === 'agencia';
+    if (esAgencia && !dir.agencia) return mostrarError('Decinos la agencia DAC donde retirar');
+    if (!esAgencia && !dir.calle)  return mostrarError('Dejanos la dirección');
+  }
 
   const btn = $('#btn-pagar');
   btn.disabled = true;
@@ -287,35 +379,34 @@ async function pagar() {
         telefono: fd.get('telefono'),
         documento: fd.get('documento'),
         envio_tipo: envioSeleccionado,
-        direccion: envioSeleccionado === 'retiro' ? null : {
-          calle: fd.get('calle'), apto: fd.get('apto'),
-          barrio: fd.get('barrio'), depto: fd.get('depto'),
-          cp: fd.get('cp'), agencia: fd.get('agencia')
-        },
-        nota: fd.get('nota'),
+        envio_modalidad: envioSeleccionado === 'interior' ? modalidadInterior : '',
+        direccion: envioSeleccionado === 'retiro' ? null : dir,
+        metodo_pago: metodoPago,
+        nota,
         items: cart.map(i => ({ slug: i.slug, cantidad: i.cantidad || 1 }))
       })
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'No pudimos procesar el pedido');
 
+    localStorage.setItem('merfina_last_pedido', data.pedido_id);
+    localStorage.removeItem('merfina_cart');
+
+    if (data.redirect) {
+      location.href = data.redirect;
+      return;
+    }
     if (data.sin_mp) {
-      // Fallback: Mercado Pago no configurado → WhatsApp
       const msg = encodeURIComponent(
         `Hola Merfina, armé el pedido #${data.pedido_numero} por ${precio(data.total)} y quería coordinar el pago. Mi mail: ${fd.get('email')}`);
-      localStorage.removeItem('merfina_cart');
       location.href = `https://wa.me/59891900341?text=${msg}`;
       return;
     }
-
-    // Guardamos el id y vaciamos carrito, redirigimos a MP
-    localStorage.setItem('merfina_last_pedido', data.pedido_id);
-    localStorage.removeItem('merfina_cart');
     location.href = data.init_point;
   } catch (e) {
     mostrarError(e.message);
     btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg> Pagar con Mercado Pago';
+    render();
   }
 }
 

@@ -96,6 +96,19 @@ function esc(s) {
     .replace(/"/g,'&quot;');
 }
 
+function formatearDireccion(d) {
+  if (!d) return '';
+  if (typeof d === 'string') { try { d = JSON.parse(d); } catch { return d; } }
+  const partes = [];
+  if (d.calle) partes.push(d.calle + (d.apto ? ' · Apto ' + d.apto : ''));
+  if (d.barrio) partes.push(d.barrio);
+  if (d.ciudad) partes.push(d.ciudad);
+  if (d.depto) partes.push(d.depto);
+  if (d.cp) partes.push('CP ' + d.cp);
+  if (d.agencia) partes.push('Agencia: ' + d.agencia);
+  return partes.join(' · ');
+}
+
 function leerArchivo(file) {
   return new Promise((ok, err) => {
     const fr = new FileReader();
@@ -530,9 +543,11 @@ async function verPedido(id) {
         </div>
         <div>
           <div style="color:var(--mute);font-size:11px;letter-spacing:.2em;text-transform:uppercase">Envío</div>
-          <div>${esc(pedido.envio_tipo || '—')}</div>
-          ${pedido.direccion ? `<div style="font-size:12px;color:var(--text-soft);margin-top:6px">${esc(JSON.stringify(pedido.direccion))}</div>` : ''}
+          <div>${esc(pedido.envio_tipo || '—')}${pedido.envio_modalidad ? ` · ${esc(pedido.envio_modalidad)}` : ''}</div>
+          ${pedido.direccion ? `<div style="font-size:12px;color:var(--text-soft);margin-top:6px">${esc(formatearDireccion(pedido.direccion))}</div>` : ''}
           ${pedido.nota ? `<div style="margin-top:8px;font-style:italic">${esc(pedido.nota)}</div>` : ''}
+          <div style="color:var(--mute);font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-top:14px">Pago</div>
+          <div>${esc(pedido.metodo_pago === 'transferencia' ? 'Transferencia bancaria' : pedido.metodo_pago === 'mercadopago' ? 'Mercado Pago' : pedido.metodo_pago || '—')}</div>
         </div>
       </div>
 
@@ -875,7 +890,13 @@ async function vistaAjustes() {
       ['instagram', 'Instagram (URL)'],
       ['envio_montevideo', 'Costo envío Montevideo'],
       ['envio_interior', 'Costo envío interior'],
-      ['envio_gratis_desde', 'Envío gratis desde ($)']
+      ['envio_gratis_desde', 'Envío gratis desde ($)'],
+      ['banco_nombre', 'Banco (para transferencia)'],
+      ['banco_titular', 'Titular de la cuenta'],
+      ['banco_cuenta', 'Número de cuenta'],
+      ['banco_sucursal', 'Sucursal (opcional)'],
+      ['banco_rut', 'RUT del titular (opcional)'],
+      ['banco_email', 'Correo para avisos de transferencia']
     ];
     const campoHtml = campos.map(([k, l]) =>
       `<div><label>${l}</label><input type="text" name="${k}" value="${esc(ajustes[k] ?? '')}"></div>`).join('');

@@ -143,6 +143,33 @@ async function sincronizarDescripciones() {
   }
 }
 
+async function migrarCamposPedidos() {
+  // Idempotente: agrega columnas nuevas si no existen.
+  try {
+    await db.query(`alter table pedidos
+      add column if not exists metodo_pago text,
+      add column if not exists envio_modalidad text`);
+
+    // Ajustes bancarios default (si no existen)
+    const defaults = {
+      banco_nombre:   'Itaú',
+      banco_titular:  'Merfina Joyas',
+      banco_cuenta:   '1234567',
+      banco_sucursal: '00',
+      banco_rut:      '',
+      banco_email:    'hola@merfina.uy'
+    };
+    for (const [clave, valor] of Object.entries(defaults)) {
+      await db.query(
+        `insert into ajustes (clave, valor) values ($1, $2)
+         on conflict (clave) do nothing`,
+        [clave, JSON.stringify(valor)]);
+    }
+  } catch (err) {
+    console.log('[arranque] migración de pedidos saltada:', err.message);
+  }
+}
+
 async function limpiarCategorias() {
   // Idempotente: solo actúa si las tablas existen y hace falta.
   try {
@@ -174,6 +201,7 @@ async function preparar() {
     await crearAdmin();
     await importarCatalogo();
     await limpiarCategorias();
+    await migrarCamposPedidos();
     await sincronizarDescripciones();
     await sincronizarPrecioStockInicial();
     estado.ok = true;

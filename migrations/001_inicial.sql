@@ -82,15 +82,17 @@ create table pedidos (
   telefono       text not null,
   documento      text,
 
-  envio_tipo     text,                        -- 'retiro' | 'montevideo' | 'interior'
-  direccion      jsonb,                       -- {calle, apto, barrio, cp, agencia}
-  nota           text,
+  envio_tipo       text,                      -- 'retiro' | 'montevideo' | 'interior'
+  envio_modalidad  text,                      -- 'domicilio' | 'agencia' (solo interior)
+  direccion        jsonb,                     -- {calle, apto, barrio, depto, cp, agencia, ciudad}
+  nota             text,
 
   subtotal       int not null default 0,
   envio_costo    int not null default 0,
   total          int not null default 0,
 
   canal          text not null default 'web', -- web | whatsapp | instagram | presencial
+  metodo_pago    text,                        -- 'mercadopago' | 'transferencia'
   notas_internas text,
 
   creado_en      timestamptz not null default now(),
@@ -176,4 +178,10 @@ insert into ajustes (clave, valor) values
   ('instagram','"https://instagram.com/merfinajoyas"'),
   ('envio_montevideo','190'),
   ('envio_interior','290'),
-  ('envio_gratis_desde','4500');
+  ('envio_gratis_desde','4500'),
+  ('banco_nombre','"Itaú"'),
+  ('banco_titular','"Merfina Joyas"'),
+  ('banco_cuenta','"1234567"'),
+  ('banco_sucursal','"00"'),
+  ('banco_rut','""'),
+  ('banco_email','"hola@merfina.uy"');
