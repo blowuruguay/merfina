@@ -96,7 +96,7 @@
 
 <script>
 let catalogo = null;
-let filtroActivo = null;
+let filtroActivo = new URLSearchParams(location.search).get('cat') || null;
 
 async function cargar() {
   try {
@@ -112,9 +112,9 @@ async function cargar() {
 
 function renderFiltros() {
   const cont = document.getElementById('filtros');
-  const btns = ['<button class="filtro on" data-cat="">Todas</button>'];
+  const btns = [`<button class="filtro ${filtroActivo ? '' : 'on'}" data-cat="">Todas</button>`];
   catalogo.categorias.forEach(c => {
-    btns.push(`<button class="filtro" data-cat="${c.id}">${c.nombre}</button>`);
+    btns.push(`<button class="filtro ${filtroActivo === c.id ? 'on' : ''}" data-cat="${c.id}">${c.nombre}</button>`);
   });
   cont.innerHTML = btns.join('');
   cont.querySelectorAll('.filtro').forEach(b => {
