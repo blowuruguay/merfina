@@ -928,8 +928,8 @@ body.menu-open .nav-mobile-back{opacity:1;pointer-events:auto}
 .nav-mobile{
   position:fixed;top:0;left:0;bottom:0;
   width:min(82vw,360px);
-  background:var(--cream);
-  color:var(--dark);
+  background:#F8F3EA !important;
+  color:#141210 !important;
   padding:68px 32px 32px;
   transform:translateX(-100%);
   transition:transform .35s cubic-bezier(.4,0,.2,1);
