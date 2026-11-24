@@ -167,8 +167,7 @@ create trigger t_productos_upd before update on productos
 -- ============================================================
 insert into categorias (id, nombre, descripcion, orden) values
   ('cubre-botones','Cubre botones','Piezas que transforman cualquier camisa o blusa.',1),
-  ('corbatas','Corbatas joya','Alternativa elegante a la corbata tradicional.',2),
-  ('otros','Otras piezas','Broches, prendedores y ediciones especiales.',3);
+  ('corbatas','Corbatas','Alternativa elegante a la corbata tradicional.',2);
 
 insert into ajustes (clave, valor) values
   ('whatsapp','"https://wa.me/59891900341"'),
