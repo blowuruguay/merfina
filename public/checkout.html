@@ -151,8 +151,8 @@ async function iniciar() {
     gratisDesde = data.gratisDesde || 0;
   } catch (err) {
     opciones = [
-      { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: 190 },
-      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles', costo: 290 }
+      { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles' },
+      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles' }
     ];
   }
 
@@ -164,11 +164,8 @@ function subtotal() {
 }
 
 function costoEnvio() {
-  const op = opciones.find(x => x.id === envioSeleccionado);
-  if (!op) return 0;
-  if (op.costo === 0) return 0;
-  if (gratisDesde > 0 && subtotal() >= gratisDesde) return 0;
-  return op.costo;
+  // El costo lo paga el comprador por fuera (al delivery o a la agencia).
+  return 0;
 }
 
 function render() {
@@ -203,19 +200,17 @@ function render() {
         <div class="co-section">
           <h3><span class="n">2</span> Envío</h3>
           <div class="opts" id="envios">
-            ${opciones.map(op => {
-              const gratis = op.costo === 0 ? 'Gratis' : (gratisDesde > 0 && sub >= gratisDesde ? 'Gratis' : precio(op.costo));
-              const isGratis = gratis === 'Gratis';
-              return `
+            ${opciones.map(op => `
               <label class="opt ${envioSeleccionado === op.id ? 'on' : ''}" data-env="${op.id}">
                 <input type="radio" name="envio" value="${op.id}" ${envioSeleccionado === op.id ? 'checked' : ''}>
                 <div class="info">
                   <div class="nom">${esc(op.nombre)}</div>
                   <div class="det">${esc(op.detalle)}</div>
                 </div>
-                <div class="costo ${isGratis ? 'gratis' : ''}">${gratis}</div>
-              </label>`;
-            }).join('')}
+              </label>`).join('')}
+          </div>
+          <div style="margin-top:10px;color:var(--soft);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px">
+            El costo del envío va a cargo del comprador — se coordina con la agencia o el delivery al momento de retirar.
           </div>
 
           <div id="dir-box">
@@ -307,7 +302,7 @@ function render() {
         </div>
         <div class="co-totales">
           <div class="ln"><span>Subtotal</span><span>${precio(sub)}</span></div>
-          <div class="ln"><span>Envío</span><span>${env === 0 ? '—' : precio(env)}</span></div>
+          <div class="ln"><span>Envío</span><span style="font-style:italic;font-size:13px;color:var(--soft)">A cargo del comprador</span></div>
           <div class="ln total"><span>Total</span><span>${precio(total)}</span></div>
         </div>
         <button type="button" class="co-pagar" id="btn-pagar">

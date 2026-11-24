@@ -9,6 +9,7 @@ const express = require('express');
 const crypto = require('crypto');
 const db = require('../db');
 const mp = require('../services/mercadopago');
+const mail = require('../services/mail');
 
 const router = express.Router();
 
@@ -61,7 +62,7 @@ async function procesarPago(paymentId) {
         where id = $1`,
       [pedido.id, nuevoEstado, `\n[MP pago ${paymentId}: ${pago.status}]`]);
 
-    // Si quedó pagado, descontamos stock
+    // Si quedó pagado, descontamos stock y avisamos por correo
     if (nuevoEstado === 'pagado') {
       await db.query(
         `update productos p
@@ -69,6 +70,17 @@ async function procesarPago(paymentId) {
            from pedido_items i
           where i.pedido_id = $1 and i.producto_id = p.id`,
         [pedido.id]);
+
+      // Mail de confirmación al cliente (best-effort)
+      try {
+        const { rows: r2 } = await db.query(
+          `select id, numero, nombre, apellido, email, telefono,
+                  envio_tipo, envio_modalidad, direccion, total, metodo_pago
+             from pedidos where id = $1`, [pedido.id]);
+        if (r2[0]) await mail.pedidoConfirmado(r2[0]);
+      } catch (err) {
+        console.error('[webhook-mp] pedidoConfirmado falló:', err.message);
+      }
     }
     console.log(`[webhook-mp] pedido ${pedido.id} → ${nuevoEstado}`);
   }

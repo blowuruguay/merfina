@@ -8,6 +8,7 @@
 const express = require('express');
 const db = require('../db');
 const mp = require('../services/mercadopago');
+const mail = require('../services/mail');
 
 const router = express.Router();
 
@@ -19,24 +20,9 @@ async function leerAjustes(claves) {
   return Object.fromEntries(rows.map(r => [r.clave, r.valor]));
 }
 
-async function ajustesEnvio() {
-  const map = await leerAjustes(
-    ['envio_montevideo', 'envio_interior', 'envio_gratis_desde']);
-  return {
-    montevideo:  Number(map.envio_montevideo) || 190,
-    interior:    Number(map.envio_interior)   || 290,
-    gratisDesde: Number(map.envio_gratis_desde) || 0
-  };
-}
-
-function costoEnvio(tipo, modalidad, subtotal, aj) {
-  // Agencia DAC es un poco más barato que a domicilio en el interior.
-  // Dejamos el costo configurable y aplicamos descuento si la agencia
-  // está lista para retirar.
-  let costo = tipo === 'interior' ? aj.interior : aj.montevideo;
-  if (aj.gratisDesde > 0 && subtotal >= aj.gratisDesde) return 0;
-  return costo;
-}
+// El envío va a cargo del comprador fuera del total: se coordina con
+// la agencia o el delivery directamente. El pedido guarda envio_costo
+// en 0 y envio_tipo / modalidad para que el admin arme el envío.
 
 router.post('/preferencia', async (req, res) => {
   const d = req.body || {};
@@ -94,9 +80,8 @@ router.post('/preferencia', async (req, res) => {
     }
 
     const subtotal = pedidoItems.reduce((s, i) => s + i.precio_unit * i.cantidad, 0);
-    const aj = await ajustesEnvio();
-    const envio_costo = costoEnvio(envioTipo, envioModalidad, subtotal, aj);
-    const total = subtotal + envio_costo;
+    const envio_costo = 0;         // a cargo del comprador, se coordina aparte
+    const total = subtotal;
 
     const pedido = await db.transaccion(async cli => {
       const { rows } = await cli.query(
@@ -118,6 +103,16 @@ router.post('/preferencia', async (req, res) => {
       }
       return pedido;
     });
+
+    // Aviso al admin (mail interno) — best-effort, no bloquea
+    const pedidoCompleto = {
+      ...pedido,
+      nombre, apellido, email, telefono,
+      envio_tipo: envioTipo, envio_modalidad: envioModalidad,
+      direccion, metodo_pago: metodoPago, total
+    };
+    mail.nuevoPedidoAdmin(pedidoCompleto).catch(err =>
+      console.error('[mail] nuevoPedidoAdmin falló:', err.message));
 
     // Transferencia: no vamos a MP, respondemos redirect a página con datos del banco
     if (metodoPago === 'transferencia') {
@@ -178,18 +173,12 @@ router.get('/pedido/:id', async (req, res) => {
 });
 
 router.get('/opciones-envio', async (req, res) => {
-  try {
-    const aj = await ajustesEnvio();
-    res.json({
-      opciones: [
-        { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: aj.montevideo },
-        { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles', costo: aj.interior }
-      ],
-      gratisDesde: aj.gratisDesde
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'No pudimos cargar las opciones' });
-  }
+  res.json({
+    opciones: [
+      { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles' },
+      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles' }
+    ]
+  });
 });
 
 router.get('/datos-banco', async (req, res) => {

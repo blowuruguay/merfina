@@ -569,6 +569,8 @@ async function verPedido(id) {
             <input type="text" value="${esc(pedido.canal)}" disabled>
           </div>
         </div>
+        <label>Número de seguimiento (DAC / tracking)</label>
+        <input type="text" name="tracking" value="${esc(pedido.tracking)}" placeholder="Al pasar a 'Enviado' se incluye en el mail">
         <label>Notas internas</label>
         <textarea name="notas_internas">${esc(pedido.notas_internas)}</textarea>
 
@@ -586,9 +588,13 @@ async function verPedido(id) {
       try {
         await api(`/api/admin/pedidos/${id}`, {
           method: 'PUT',
-          body: { estado: fd.get('estado'), notas_internas: fd.get('notas_internas') }
+          body: {
+            estado: fd.get('estado'),
+            notas_internas: fd.get('notas_internas'),
+            tracking: fd.get('tracking')
+          }
         });
-        toast('Pedido actualizado', 'ok');
+        toast('Pedido actualizado · mail enviado si corresponde', 'ok');
         cerrarModal();
         vistaPedidos();
       } catch (err) { toast(err.message, 'err'); }

@@ -273,21 +273,51 @@ router.get('/pedidos/:id', async (req, res) => {
 });
 
 router.put('/pedidos/:id', async (req, res) => {
+  const mail = require('../services/mail');
   const d = req.body || {};
   const estadosOk = ['consulta','confirmado','pagado','enviado','entregado','cancelado'];
   if (d.estado && !estadosOk.includes(d.estado)) {
     return res.status(400).json({ error: 'Estado inválido' });
   }
   try {
+    // Leemos el estado anterior para decidir si disparar mail
+    const { rows: previo } = await db.query(
+      `select estado from pedidos where id = $1`, [req.params.id]);
+    const estadoAnterior = previo[0]?.estado;
+
     await db.query(
       `update pedidos set
          estado = coalesce($2, estado),
          notas_internas = coalesce($3, notas_internas),
+         tracking = coalesce($4, tracking),
          confirmado_en = case when $2 = 'confirmado' and confirmado_en is null then now() else confirmado_en end,
          pagado_en     = case when $2 = 'pagado'     and pagado_en     is null then now() else pagado_en     end,
          enviado_en    = case when $2 = 'enviado'    and enviado_en    is null then now() else enviado_en    end
        where id = $1`,
-      [req.params.id, d.estado || null, d.notas_internas ?? null]);
+      [req.params.id, d.estado || null, d.notas_internas ?? null, d.tracking ?? null]);
+
+    // Disparo de correos según transición de estado
+    if (d.estado && d.estado !== estadoAnterior) {
+      const { rows: p } = await db.query(
+        `select id, numero, nombre, apellido, email, telefono,
+                envio_tipo, envio_modalidad, direccion, total, metodo_pago, tracking
+           from pedidos where id = $1`, [req.params.id]);
+      const pedido = p[0];
+      if (pedido?.email) {
+        try {
+          if (d.estado === 'pagado' || d.estado === 'confirmado') {
+            await mail.pedidoConfirmado(pedido);
+          } else if (d.estado === 'enviado') {
+            await mail.pedidoEnviado(pedido);
+          } else if (d.estado === 'entregado') {
+            await mail.pedidoEntregado(pedido);
+          }
+        } catch (err) {
+          console.error(`[admin] mail de ${d.estado} falló:`, err.message);
+        }
+      }
+    }
+
     res.json({ ok: true });
   } catch (err) {
     console.error('Error actualizando pedido', err);

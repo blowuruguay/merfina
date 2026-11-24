@@ -104,7 +104,7 @@
       <div class="bolsa-tot"><span>Subtotal</span><span>${precio(total)}</span></div>
       <a href="/checkout" class="bolsa-cta">Finalizar compra</a>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--text-soft);letter-spacing:.06em">
-        Envío se calcula en el checkout
+        Envío a cargo del comprador
       </div>
     `;
 
