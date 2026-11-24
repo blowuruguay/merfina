@@ -96,6 +96,15 @@ function esc(s) {
     .replace(/"/g,'&quot;');
 }
 
+function leerArchivo(file) {
+  return new Promise((ok, err) => {
+    const fr = new FileReader();
+    fr.onload = () => ok(fr.result);
+    fr.onerror = () => err(new Error('No pudimos leer el archivo'));
+    fr.readAsDataURL(file);
+  });
+}
+
 // ============================================================
 // Login / logout
 // ============================================================
@@ -271,6 +280,7 @@ async function editarProducto(id) {
   if (id) {
     const r = await api(`/api/admin/productos/${id}`);
     p = r.producto;
+    estado.cache.productoSlug = p.slug;
   }
 
   const opcionesCat = cats.map(c =>
@@ -338,13 +348,21 @@ async function editarProducto(id) {
       ${id ? `
         <label style="margin-top:28px">Imágenes</label>
         <div class="img-grid" id="imagenes">${imagenes}</div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <input type="url" id="nueva-img" placeholder="https://… URL de la imagen" style="flex:1">
-          <button type="button" class="btn btn-ghost btn-sm" id="agregar-img">Agregar</button>
+        <div class="upload-box">
+          <input type="file" id="nueva-img-file" accept="image/jpeg,image/png,image/webp,image/avif" style="display:none">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-subir-img">+ Subir foto</button>
+          <span id="upload-status" style="color:var(--mute);font-size:12px;margin-left:10px"></span>
         </div>
-        <small style="color:var(--mute);display:block;margin-top:6px">
-          Subí la imagen primero (ej: a Cloudflare R2, Cloudinary o /public/img del repo) y pegá acá la URL pública.
-        </small>
+        <details style="margin-top:14px">
+          <summary style="cursor:pointer;color:var(--mute);font-size:12px">Pegar URL manual</summary>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input type="url" id="nueva-img-url" placeholder="https://..." style="flex:1">
+            <button type="button" class="btn btn-ghost btn-sm" id="agregar-img-url">Agregar</button>
+          </div>
+          <small style="color:var(--mute);display:block;margin-top:6px">
+            Útil si ya subiste la imagen a otro lado.
+          </small>
+        </details>
       ` : ''}
 
       <div class="actions">
@@ -391,8 +409,9 @@ async function editarProducto(id) {
       } catch (err) { toast(err.message, 'err'); }
     };
 
-    $('#agregar-img').onclick = async () => {
-      const url = $('#nueva-img').value.trim();
+    // Pegar URL manual
+    $('#agregar-img-url').onclick = async () => {
+      const url = $('#nueva-img-url').value.trim();
       if (!url) return;
       try {
         await api(`/api/admin/productos/${id}/imagenes`, {
@@ -401,6 +420,37 @@ async function editarProducto(id) {
         });
         editarProducto(id);
       } catch (err) { toast(err.message, 'err'); }
+    };
+
+    // Subida a R2
+    $('#btn-subir-img').onclick = () => $('#nueva-img-file').click();
+    $('#nueva-img-file').onchange = async e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const status = $('#upload-status');
+      status.textContent = 'Subiendo...';
+      try {
+        const datos = await leerArchivo(file);
+        const prodSlug = estado.cache.productoSlug || 'producto';
+        const { url } = await api('/api/admin/imagenes', {
+          method: 'POST',
+          body: {
+            nombre: file.name,
+            datos,
+            carpeta: `productos/${prodSlug}`
+          }
+        });
+        await api(`/api/admin/productos/${id}/imagenes`, {
+          method: 'POST',
+          body: { url, orden: ($$('#imagenes .im')).length }
+        });
+        status.textContent = '';
+        toast('Imagen subida', 'ok');
+        editarProducto(id);
+      } catch (err) {
+        status.textContent = '';
+        toast(err.message, 'err');
+      }
     };
     $$('[data-del-img]').forEach(b => {
       b.onclick = async () => {

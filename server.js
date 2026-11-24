@@ -18,6 +18,9 @@ const app = express();
 const PUERTO = process.env.PORT || 3000;
 
 app.use(compression());
+// La subida de imágenes necesita hasta 12 MB (base64 infla el tamaño);
+// se registra ANTES del límite general para que solo esa ruta tenga ese tamaño.
+app.use('/api/admin/imagenes', express.json({ limit: '12mb' }));
 app.use(express.json({ limit: '200kb' }));
 
 app.use((err, req, res, next) => {
@@ -81,12 +84,13 @@ app.use((req, res, next) => {
 });
 
 // -------------------- API --------------------
-app.use('/api/catalogo',   require('./routes/catalogo'));
-app.use('/api/contacto',   require('./routes/contacto'));
-app.use('/api/newsletter', require('./routes/newsletter'));
-app.get('/baja-correos',   require('./routes/newsletter').bajaCorreos);
-app.use('/api/auth',       require('./routes/auth'));
-app.use('/api/admin',      require('./routes/admin'));
+app.use('/api/catalogo',         require('./routes/catalogo'));
+app.use('/api/contacto',         require('./routes/contacto'));
+app.use('/api/newsletter',       require('./routes/newsletter'));
+app.get('/baja-correos',         require('./routes/newsletter').bajaCorreos);
+app.use('/api/auth',             require('./routes/auth'));
+app.use('/api/admin/imagenes',   require('./routes/imagenes'));
+app.use('/api/admin',            require('./routes/admin'));
 
 // -------------------- Salud --------------------
 app.get('/api/salud', (req, res) => {

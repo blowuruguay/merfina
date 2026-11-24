@@ -493,3 +493,13 @@ form.form .actions {
   .content { padding: 20px; }
   form.form .row, form.form .row-3 { grid-template-columns: 1fr; }
 }
+
+/* Uploader de imágenes en el modal de producto */
+.upload-box{
+  margin-top:12px;
+  padding:16px;
+  background:var(--panel);
+  border:1px dashed var(--line);
+  border-radius:2px;
+  display:flex;align-items:center;
+}
