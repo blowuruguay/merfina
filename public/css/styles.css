@@ -531,10 +531,11 @@ section{padding:130px 56px;position:relative}
 .lookbook-head .eyebrow{display:block;margin-bottom:20px;color:var(--gold-soft)}
 .lookbook-head h2{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(48px,5.8vw,86px);
-  font-weight:500;
+  font-size:clamp(34px,3.8vw,60px);
+  font-weight:400;
   color:#fff;
-  line-height:1;
+  line-height:1.05;
+  letter-spacing:-.005em;
 }
 .look-link{
   font-size:10.5px;
@@ -564,11 +565,13 @@ section{padding:130px 56px;position:relative}
   color:#f3e9d6;
   z-index:2;
 }
-.tile1 .bg{background:url('/img/look-1.jpg') center/cover no-repeat}
-.tile2 .bg{background:url('/img/look-2.jpg') center/cover no-repeat}
-.tile3 .bg{background:url('/img/look-3.jpg') center/cover no-repeat}
-.tile4 .bg{background:url('/img/look-4.jpg') center/cover no-repeat}
-.tile5 .bg{background:url('/img/look-5.jpg') center/cover no-repeat}
+/* Cada tile muestra un uso distinto de la pieza: el label debe
+   describir lo que se ve en la foto. */
+.tile1 .bg{background:url('/img/look-1.jpg') center/cover no-repeat}  /* principal */
+.tile2 .bg{background:url('/img/look-2.jpg') center/cover no-repeat}  /* En los puños */
+.tile3 .bg{background:url('/img/look-4.jpg') center/cover no-repeat}  /* Con corbata */
+.tile4 .bg{background:url('/img/look-3.jpg') center/cover no-repeat}  /* En la tapeta */
+.tile5 .bg{background:url('/img/look-5.jpg') center/cover no-repeat}  /* En las manos */
 .look-tile .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent 55%);pointer-events:none}
 
 /* ============ FEATURES ============ */
