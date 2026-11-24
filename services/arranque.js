@@ -16,6 +16,41 @@ const db = require('../db');
 
 const estado = { ok: null, terminado: false, error: null };
 
+async function importarCatalogo() {
+  const { rows } = await db.query(`select count(*)::int as n from productos`);
+  if (rows[0].n > 0) {
+    console.log(`[arranque] Ya hay ${rows[0].n} productos, no se importa nada`);
+    return;
+  }
+  const ruta = path.join(__dirname, '../tools/catalogo-inicial.json');
+  if (!fs.existsSync(ruta)) {
+    console.log('[arranque] No hay catalogo-inicial.json, salteo');
+    return;
+  }
+  const datos = JSON.parse(fs.readFileSync(ruta, 'utf8'));
+  console.log(`[arranque] Importando ${datos.length} productos...`);
+  for (const p of datos) {
+    await db.transaccion(async cli => {
+      const { rows: r } = await cli.query(
+        `insert into productos (slug, nombre, categoria_id, precio, descripcion,
+                                materiales, medidas, stock, destacado, activo)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,coalesce($9,false),coalesce($10,true))
+         returning id`,
+        [p.slug, p.nombre, p.categoria_id, p.precio || 0, p.descripcion || null,
+         p.materiales || null, p.medidas || null, p.stock || 1,
+         p.destacado, p.activo]);
+      const id = r[0].id;
+      for (let i = 0; i < (p.imagenes || []).length; i++) {
+        await cli.query(
+          `insert into producto_imagenes (producto_id, url, alt, orden)
+           values ($1,$2,$3,$4)`,
+          [id, p.imagenes[i], p.nombre, i]);
+      }
+    });
+  }
+  console.log(`[arranque] Catálogo importado: ${datos.length} productos`);
+}
+
 async function tablasCreadas() {
   const { rows } = await db.query(
     `select exists (
@@ -69,6 +104,7 @@ async function preparar() {
   try {
     await migrar();
     await crearAdmin();
+    await importarCatalogo();
     estado.ok = true;
   } catch (err) {
     console.error('[arranque] Falló:', err.message);
