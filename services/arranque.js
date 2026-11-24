@@ -100,11 +100,37 @@ async function crearAdmin() {
   console.log(`[arranque] Usuario del panel listo: ${rows[0].email}`);
 }
 
+async function limpiarCategorias() {
+  // Idempotente: solo actúa si las tablas existen y hace falta.
+  try {
+    // Renombra "Corbatas joya" a "Corbatas" si quedó así del seed viejo
+    await db.query(
+      `update categorias set nombre = 'Corbatas'
+         where id = 'corbatas' and nombre <> 'Corbatas'`);
+    // Borra la categoría 'otros' si existe y no tiene productos asociados
+    const { rows } = await db.query(
+      `select exists(
+         select 1 from categorias where id = 'otros'
+       ) as hay`);
+    if (rows[0].hay) {
+      const { rows: prodRows } = await db.query(
+        `select count(*)::int as n from productos where categoria_id = 'otros'`);
+      if (prodRows[0].n === 0) {
+        await db.query(`delete from categorias where id = 'otros'`);
+        console.log('[arranque] Categoría "otros" eliminada');
+      }
+    }
+  } catch (err) {
+    console.log('[arranque] limpieza de categorías saltada:', err.message);
+  }
+}
+
 async function preparar() {
   try {
     await migrar();
     await crearAdmin();
     await importarCatalogo();
+    await limpiarCategorias();
     estado.ok = true;
   } catch (err) {
     console.error('[arranque] Falló:', err.message);

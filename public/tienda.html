@@ -114,16 +114,53 @@
   </div>
 </main>
 
-<footer class="footer">
-  <div class="footer-brand">
-    <img class="logo-monogram" src="/img/logo-gold.png" alt="Merfina">
-    <div class="footer-word">MERFINA</div>
+<footer>
+  <div class="footer-logo">
+    <div class="footer-brand">
+      <img class="logo-monogram xl" src="/img/logo-gold.png" alt="Merfina">
+      <span class="logo-word big">MERFINA</span>
+    </div>
+    <div class="footer-dot"></div>
   </div>
-  <div class="footer-cols">
-    <div><h4>Tienda</h4><a href="/tienda">Catálogo</a><a href="/contacto">Contacto</a></div>
-    <div><h4>Seguinos</h4><a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a></div>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h5>Tienda</h5>
+      <ul>
+        <li><a href="/tienda">Colección</a></li>
+        <li><a href="/tienda?cat=cubre-botones">Cubre botones</a></li>
+        <li><a href="/tienda?cat=corbatas">Corbatas</a></li>
+        <li><a href="/#como">Cómo se usan</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Ayuda</h5>
+      <ul>
+        <li><a href="/envios">Envíos y entregas</a></li>
+        <li><a href="/cambios">Cambios y devoluciones</a></li>
+        <li><a href="/#faq">Preguntas frecuentes</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Merfina</h5>
+      <ul>
+        <li><a href="/#historia">Nosotros</a></li>
+        <li><a href="https://www.instagram.com/merfinajoyas/" target="_blank">Instagram</a></li>
+        <li><a href="https://wa.me/59891900341" target="_blank">WhatsApp · 091 900 341</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+      </ul>
+    </div>
   </div>
-  <div class="footer-bottom">© Merfina Joyas · Uruguay</div>
+  <div class="footer-bottom">
+    <span>© 2026 Merfina Joyas · Montevideo, Uruguay</span>
+    <span class="footer-tagline">Una joya que hace la diferencia</span>
+  </div>
 </footer>
 
 <script>
@@ -144,10 +181,18 @@ async function cargar() {
 
 function renderFiltros() {
   const cont = document.getElementById('filtros');
-  const btns = [`<button class="filtro ${filtroActivo ? '' : 'on'}" data-cat="">Todas</button>`];
-  catalogo.categorias.forEach(c => {
+  // Solo mostramos "Cubre botones" y "Corbatas" como categorías reales.
+  // Nada de "Otras piezas" ni "Corbatas joya" aunque estén en la base.
+  const permitidas = ['cubre-botones', 'corbatas'];
+  const cats = catalogo.categorias.filter(c => permitidas.includes(c.id));
+  // Normalizamos nombres por si en la base quedó "Corbatas joya"
+  cats.forEach(c => { if (c.id === 'corbatas') c.nombre = 'Corbatas'; });
+
+  const btns = [];
+  cats.forEach(c => {
     btns.push(`<button class="filtro ${filtroActivo === c.id ? 'on' : ''}" data-cat="${c.id}">${c.nombre}</button>`);
   });
+  btns.push(`<button class="filtro ${filtroActivo ? '' : 'on'}" data-cat="">Toda la colección</button>`);
   cont.innerHTML = btns.join('');
   cont.querySelectorAll('.filtro').forEach(b => {
     b.onclick = () => {
@@ -159,9 +204,11 @@ function renderFiltros() {
 }
 
 function render() {
+  const permitidas = ['cubre-botones', 'corbatas'];
+  const base = catalogo.productos.filter(p => permitidas.includes(p.categoria_id));
   const lista = filtroActivo
-    ? catalogo.productos.filter(p => p.categoria_id === filtroActivo)
-    : catalogo.productos;
+    ? base.filter(p => p.categoria_id === filtroActivo)
+    : base;
 
   if (!lista.length) {
     document.getElementById('productos').innerHTML =
