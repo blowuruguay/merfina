@@ -153,7 +153,7 @@
     font-size: 12px; font-weight: 500;
     color: var(--co-text); margin-bottom: 7px;
   }
-  .field > label .opt { color: var(--co-mute); font-weight: 400; margin-left: 4px; }
+  .field > label .opc { color: var(--co-mute); font-weight: 400; margin-left: 4px; }
 
   input[type=text], input[type=email], input[type=tel],
   input[type=number], textarea, select {
@@ -346,9 +346,13 @@
   }
   .co-totales .total .lb { color: var(--co-dark); font-weight: 600; font-size: 14px; }
   .co-totales .total .amt {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 30px; font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px; font-weight: 600;
     color: var(--co-dark); letter-spacing: -.01em;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .co-item .p, .co-totales .ln span:last-child {
+    font-variant-numeric: tabular-nums lining-nums;
   }
 
   .co-err {
@@ -450,7 +454,7 @@ const estado = {
   metodoPago: 'mercadopago',
   cart: [],
   datos: {
-    nombre: '', apellido: '', email: '', telefono: '', documento: '',
+    nombre: '', apellido: '', email: '', telefono: '',
     calle: '', apto: '', barrio: '', depto: '', ciudad: '', cp: '', agencia: '',
     nota: ''
   }
@@ -517,34 +521,26 @@ function panelDatos() {
     <div class="card panel">
       <div class="row">
         <div class="field">
-          <label>Nombre</label>
-          <input type="text" name="nombre" value="${esc(d.nombre)}" required>
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" type="text" name="nombre" value="${esc(d.nombre)}" required autocomplete="given-name" placeholder="Camila">
         </div>
         <div class="field">
-          <label>Apellido <span class="opt">(opcional)</span></label>
-          <input type="text" name="apellido" value="${esc(d.apellido)}">
+          <label for="f-apellido">Apellido</label>
+          <input id="f-apellido" type="text" name="apellido" value="${esc(d.apellido)}" autocomplete="family-name" placeholder="Pérez">
         </div>
       </div>
       <div class="row">
         <div class="field">
-          <label>Correo</label>
-          <input type="email" name="email" value="${esc(d.email)}" required placeholder="tu@correo.com">
+          <label for="f-email">Correo</label>
+          <input id="f-email" type="email" name="email" value="${esc(d.email)}" required autocomplete="email" placeholder="camila@correo.com">
         </div>
         <div class="field">
-          <label>Teléfono</label>
-          <input type="tel" name="telefono" value="${esc(d.telefono)}" required placeholder="099 000 000">
+          <label for="f-telefono">Teléfono</label>
+          <input id="f-telefono" type="tel" name="telefono" value="${esc(d.telefono)}" required autocomplete="tel" placeholder="099 000 000">
         </div>
       </div>
-      <div class="field">
-        <label>Documento <span class="opt">(opcional, CI)</span></label>
-        <input type="text" name="documento" value="${esc(d.documento)}" placeholder="1.234.567-8">
-      </div>
     </div>
-    <div class="wizard-nav">
-      <a href="/tienda" class="btn-back">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        <span>Volver a la tienda</span>
-      </a>
+    <div class="wizard-nav wizard-nav-first">
       <button class="btn-next" id="btn-next">
         Continuar al envío
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -618,17 +614,17 @@ function panelEnvio() {
               <input type="text" name="calle" value="${esc(d.calle)}" required placeholder="Av. Italia 1234">
             </div>
             <div class="field">
-              <label>Apto / piso <span class="opt">(opcional)</span></label>
+              <label>Apto / piso <span class="opc">(opcional)</span></label>
               <input type="text" name="apto" value="${esc(d.apto)}">
             </div>
           </div>
           <div class="row">
             <div class="field">
-              <label>Barrio <span class="opt">(opcional)</span></label>
+              <label>Barrio <span class="opc">(opcional)</span></label>
               <input type="text" name="barrio" value="${esc(d.barrio)}">
             </div>
             <div class="field">
-              <label>Código postal <span class="opt">(opcional)</span></label>
+              <label>Código postal <span class="opc">(opcional)</span></label>
               <input type="text" name="cp" value="${esc(d.cp)}">
             </div>
           </div>
@@ -722,9 +718,8 @@ function panelConfirmar() {
       <div class="review-sec">
         <div class="rs-head"><div class="t">Contacto</div><button class="edit" data-edit="1">Editar</button></div>
         <div class="rs-body">
-          <div>${esc(d.nombre)} ${esc(d.apellido)}</div>
+          <div>${esc(d.nombre)}${d.apellido ? ' ' + esc(d.apellido) : ''}</div>
           <div class="m">${esc(d.email)} · ${esc(d.telefono)}</div>
-          ${d.documento ? `<div class="m">CI: ${esc(d.documento)}</div>` : ''}
         </div>
       </div>
       <div class="review-sec">
@@ -854,7 +849,7 @@ async function pagar() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         nombre: d.nombre, apellido: d.apellido,
-        email: d.email, telefono: d.telefono, documento: d.documento,
+        email: d.email, telefono: d.telefono,
         envio_tipo: estado.envioTipo,
         envio_modalidad: estado.envioTipo === 'interior' ? estado.modalidad : '',
         direccion: dir, metodo_pago: estado.metodoPago,
