@@ -131,7 +131,7 @@ app.get('*', (req, res) => {
   }
 
   // Páginas conocidas de la tienda
-  const paginas = ['tienda', 'producto', 'contacto', 'carrito', 'nosotros'];
+  const paginas = ['tienda', 'producto', 'contacto', 'carrito', 'nosotros', 'cambios', 'envios'];
   const primera = req.path.split('/')[1];
   if (paginas.includes(primera)) {
     const archivo = path.join(__dirname, 'public', `${primera}.html`);

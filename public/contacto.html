@@ -3,209 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contacto — Merfina Joyas</title>
-<meta name="description" content="Escribinos. Te contestamos por correo o WhatsApp.">
+<title>Contacto · Merfina Joyas</title>
+<meta name="description" content="¿Tenés una consulta sobre una pieza, tu pedido o un regalo? Escribinos y te respondemos a la brevedad.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Infant:ital,wght@0,500;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles.css">
-<style>
-  .pag { background: var(--cream); padding: 180px 40px 80px; min-height: 100vh; }
-  .pag-head { text-align: center; max-width: 720px; margin: 0 auto 60px; }
-  .pag-head .eyebrow { color: #8a8276; font-size: 11px; letter-spacing: .4em; text-transform: uppercase; }
-  .pag-head h1 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(42px, 5vw, 64px); color: #141210; margin: 16px 0 20px; }
-  .pag-head p { color: #8a8276; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; }
-
-  .ctt-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1080px; margin: 0 auto; }
-  @media (max-width: 860px) { .ctt-wrap { grid-template-columns: 1fr; gap: 40px; } }
-
-  .ctt-info h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 28px; color: #141210; margin: 0 0 24px; }
-  .ctt-info .dato { margin-bottom: 20px; }
-  .ctt-info .dato label { color: #8a8276; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; display: block; margin-bottom: 6px; }
-  .ctt-info .dato a, .ctt-info .dato span { color: #141210; font-family: 'Cormorant Garamond', serif; font-size: 20px; text-decoration: none; }
-  .ctt-info .dato a:hover { color: #8F7349; }
-
-  form.ctt-form { background: #FBF7F0; padding: 36px; border: 1px solid #e6ddcf; }
-  form.ctt-form label { display: block; color: #8a8276; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; margin: 18px 0 6px; }
-  form.ctt-form input, form.ctt-form textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #d8cfbe;
-    background: #fff;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    color: #141210;
-  }
-  form.ctt-form textarea { min-height: 120px; resize: vertical; }
-  form.ctt-form input:focus, form.ctt-form textarea:focus { outline: none; border-color: #B89766; }
-  form.ctt-form button {
-    margin-top: 26px;
-    width: 100%;
-    padding: 14px;
-    background: #141210;
-    color: #F8F3EA;
-    border: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    letter-spacing: .38em;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-  form.ctt-form button:hover { background: #8F7349; }
-  .ctt-msg { text-align: center; padding: 14px; margin-top: 18px; font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; }
-  .ctt-msg.ok { color: #4a8f5c; }
-  .ctt-msg.err { color: #b4553c; }
-</style>
+<link rel="stylesheet" href="/css/articulo.css">
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-track">
-    <span>Piezas que transforman cada look</span><span class="dot">·</span>
-    <span>Detalles elegidos con amor</span><span class="dot">·</span>
-    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
-    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
-    <span>Piezas que transforman cada look</span><span class="dot">·</span>
-    <span>Detalles elegidos con amor</span><span class="dot">·</span>
-    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
-    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
-  </div>
-</div>
-
-<nav class="nav scrolled">
-  <button class="nav-burger" aria-label="Menú" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="nav-left">
-    <a href="/tienda" class="nav-link">Tienda</a>
-    <a href="/#historia" class="nav-link">Nuestra historia</a>
-    <a href="/#lookbook" class="nav-link">Lookbook</a>
-  </div>
-  <a href="/" class="logo">
-    <img class="logo-monogram logo-dark" src="/img/logo-gold.png" alt="Merfina">
-    <span class="logo-word">MERFINA</span>
-  </a>
-  <div class="nav-right">
-    <a href="/contacto" class="nav-link">Contacto</a>
-  </div>
-</nav>
-
-<div class="nav-mobile-back"></div>
-<div class="nav-mobile">
-  <a href="/" class="nml-brand">
+<header class="art-nav">
+  <a href="/tienda" class="art-back">← Volver a la tienda</a>
+  <a href="/" class="art-logo">
     <img src="/img/logo-gold.png" alt="Merfina">
     <span>MERFINA</span>
   </a>
-  <nav>
-    <a href="/tienda">Tienda</a>
-    <a href="/tienda?cat=cubre-botones">Cubre botones</a>
-    <a href="/tienda?cat=corbatas">Corbatas</a>
-    <a href="/#historia">Nuestra historia</a>
-    <a href="/#lookbook">Lookbook</a>
-    <a href="/contacto">Contacto</a>
-  </nav>
-  <div class="nml-foot">
-    <a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a>
-    <a href="https://wa.me/59891900341" target="_blank">WhatsApp</a>
-  </div>
-</div>
+  <a href="/tienda" class="art-link">Tienda</a>
+</header>
 
-<script src="/js/menu-mobile.js" defer></script>
-
-<main class="pag">
-  <div class="pag-head">
-    <div class="eyebrow">Hablemos</div>
+<main class="articulo">
+  <div class="art-wrap">
+    <div class="art-eyebrow">Merfina</div>
     <h1>Contacto</h1>
-    <p>Consultas, encargos a medida o colaboraciones. Te contestamos a la brevedad.</p>
-  </div>
+    <p class="art-lead">¿Tenés una consulta sobre una pieza, tu pedido o un regalo? Escribinos y te respondemos a la brevedad.</p>
 
-  <div class="ctt-wrap">
-    <div class="ctt-info">
-      <h3>También podés escribirnos por…</h3>
-      <div class="dato">
-        <label>WhatsApp</label>
-        <a id="d-wa" href="#" target="_blank">—</a>
-      </div>
-      <div class="dato">
-        <label>Correo</label>
-        <a id="d-mail" href="#">—</a>
-      </div>
-      <div class="dato">
-        <label>Instagram</label>
-        <a id="d-ig" href="#" target="_blank">@merfinajoyas</a>
-      </div>
-      <div class="dato">
-        <label>Envíos</label>
-        <span>Montevideo e interior · Agencia DAC</span>
-      </div>
+    <div class="art-ctas">
+      <a href="https://wa.me/59891900341?text=Hola%20Merfina%2C%20quer%C3%ADa%20hacer%20una%20consulta." target="_blank" rel="noopener" class="art-btn-wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.45 14.19c-.23.64-1.33 1.22-1.87 1.3-.5.07-1.13.1-1.82-.11-.42-.14-.95-.3-1.64-.6-2.88-1.24-4.76-4.14-4.91-4.33-.14-.19-1.17-1.56-1.17-2.97 0-1.42.74-2.11 1-2.4.26-.29.57-.37.76-.37h.55c.18 0 .42-.07.66.5.23.57.79 1.97.86 2.11.07.14.12.3.02.5-.09.19-.14.31-.28.48-.14.17-.3.37-.42.5-.14.14-.29.3-.12.59.17.29.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.42.29.14.46.12.63-.07.17-.2.73-.85.92-1.14.19-.29.38-.24.64-.14.26.09 1.65.78 1.93.92.28.14.47.21.54.33.07.11.07.68-.16 1.32z"/></svg>
+        Escribinos por WhatsApp
+      </a>
+      <a href="https://instagram.com/merfinajoyas" target="_blank" rel="noopener" class="art-btn-out">
+        Instagram @merfinajoyas
+      </a>
     </div>
 
-    <form class="ctt-form" id="form-contacto">
-      <label>Nombre</label>
-      <input type="text" name="nombre" required>
-      <label>Correo</label>
-      <input type="email" name="email" required>
-      <label>Teléfono (opcional)</label>
-      <input type="tel" name="telefono">
-      <label>Asunto</label>
-      <input type="text" name="asunto" placeholder="Consulta, encargo, otro">
-      <label>Mensaje</label>
-      <textarea name="mensaje" required></textarea>
-      <button type="submit">Enviar mensaje</button>
-      <div class="ctt-msg" id="ctt-msg"></div>
-    </form>
+    <div class="art-sep"></div>
+
+    <h2>Dónde estamos</h2>
+    <p>Somos una tienda online de Montevideo, Uruguay, con envíos a todo el país.</p>
+
+    <h2>Tu pedido</h2>
+    <p>Si ya compraste, tené a mano tu número de pedido (empieza con MF-). Lo encontrás en el email de confirmación.</p>
   </div>
 </main>
 
-<footer class="footer">
-  <div class="footer-brand">
-    <img class="logo-monogram" src="/img/logo-gold.png" alt="Merfina">
-    <div class="footer-word">MERFINA</div>
+<footer class="art-footer">
+  <div class="art-foot-grid">
+    <div><h5>Tienda</h5><ul><li><a href="/tienda">Catálogo</a></li><li><a href="/tienda?cat=cubre-botones">Cubre botones</a></li><li><a href="/tienda?cat=corbatas">Corbatas</a></li></ul></div>
+    <div><h5>Ayuda</h5><ul><li><a href="/contacto">Contacto</a></li><li><a href="/envios">Envíos y entregas</a></li><li><a href="/cambios">Cambios y devoluciones</a></li></ul></div>
+    <div><h5>Legal</h5><ul><li><a href="/">Términos</a></li><li><a href="/">Privacidad</a></li></ul></div>
+    <div><h5>Merfina</h5><ul><li><a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a></li><li><a href="https://wa.me/59891900341" target="_blank">WhatsApp</a></li></ul></div>
   </div>
-  <div class="footer-cols">
-    <div><h4>Tienda</h4><a href="/tienda">Catálogo</a><a href="/contacto">Contacto</a></div>
-    <div><h4>Seguinos</h4><a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a></div>
-  </div>
-  <div class="footer-bottom">© Merfina Joyas · Uruguay</div>
+  <div class="art-foot-bottom">© Merfina Joyas · Uruguay · Hecho con cuidado en Montevideo</div>
 </footer>
-
-<script>
-(async () => {
-  try {
-    const r = await fetch('/api/catalogo/ajustes');
-    const { ajustes } = await r.json();
-    if (ajustes.whatsapp) { document.getElementById('d-wa').href = ajustes.whatsapp; document.getElementById('d-wa').textContent = ajustes.telefono || 'Chatear'; }
-    if (ajustes.email)    { document.getElementById('d-mail').href = 'mailto:' + ajustes.email; document.getElementById('d-mail').textContent = ajustes.email; }
-    if (ajustes.instagram){ document.getElementById('d-ig').href = ajustes.instagram; }
-  } catch {}
-})();
-
-document.getElementById('form-contacto').addEventListener('submit', async e => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const msg = document.getElementById('ctt-msg');
-  msg.textContent = ''; msg.className = 'ctt-msg';
-  const body = Object.fromEntries(fd.entries());
-  try {
-    const r = await fetch('/api/contacto', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || 'Error');
-    msg.textContent = 'Gracias — tu mensaje llegó. Te contestamos pronto.';
-    msg.className = 'ctt-msg ok';
-    e.target.reset();
-  } catch (err) {
-    msg.textContent = err.message;
-    msg.className = 'ctt-msg err';
-  }
-});
-</script>
 
 <a href="https://wa.me/59891900341?text=Hola%20Merfina%2C%20quer%C3%ADa%20hacer%20una%20consulta." target="_blank" rel="noopener" class="wa-float" aria-label="Escribinos por WhatsApp">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.823.74 5.472 2.034 7.77L0 32l8.436-2.004A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.09c-2.433 0-4.712-.68-6.653-1.86l-.478-.282-4.941 1.175 1.195-4.816-.311-.496A13.067 13.067 0 0 1 2.91 16C2.91 8.776 8.776 2.91 16 2.91c7.224 0 13.09 5.866 13.09 13.09 0 7.224-5.866 13.09-13.09 13.09zm7.49-9.805c-.41-.206-2.426-1.197-2.802-1.333-.375-.138-.649-.206-.922.206-.274.41-1.058 1.333-1.297 1.606-.239.274-.478.308-.887.103-.41-.205-1.73-.637-3.295-2.03-1.218-1.086-2.04-2.427-2.279-2.838-.239-.41-.026-.633.179-.837.183-.182.41-.478.615-.717.205-.239.274-.41.41-.683.138-.274.07-.513-.034-.717-.102-.206-.922-2.222-1.263-3.043-.333-.799-.671-.69-.922-.703-.239-.012-.512-.015-.785-.015-.274 0-.717.103-1.093.513-.376.41-1.434 1.4-1.434 3.414 0 2.014 1.467 3.96 1.672 4.235.205.274 2.886 4.407 6.993 6.182 2.443 1.054 3.398 1.145 4.616.963.743-.112 2.426-.99 2.77-1.947.343-.958.343-1.779.239-1.951-.102-.172-.376-.274-.787-.479z"/></svg>
 </a>
+
 </body>
 </html>
