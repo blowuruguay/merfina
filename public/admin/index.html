@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Panel · Merfina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <link rel="icon" href="/img/logo-gold.png" type="image/png">
+</head>
+<body>
+
+<!-- Pantalla de login -->
+<section id="login" class="login hidden">
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="/img/logo-gold.png" alt="Merfina">
+      <span>MERFINA</span>
+    </div>
+    <h1>Panel</h1>
+    <p class="login-sub">Ingresá para administrar tu tienda</p>
+    <form id="login-form">
+      <label>Correo</label>
+      <input type="email" name="email" required autocomplete="username">
+      <label>Contraseña</label>
+      <input type="password" name="password" required autocomplete="current-password">
+      <button type="submit">Entrar</button>
+      <p class="login-err" id="login-err"></p>
+    </form>
+  </div>
+</section>
+
+<!-- App -->
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <img src="/img/logo-gold.png" alt="Merfina">
+      <span>MERFINA</span>
+    </div>
+    <nav class="side-nav">
+      <a href="#resumen"    data-vista="resumen"   class="active">Resumen</a>
+      <a href="#productos"  data-vista="productos">Productos</a>
+      <a href="#pedidos"    data-vista="pedidos">Pedidos</a>
+      <a href="#contactos"  data-vista="contactos">Consultas</a>
+      <a href="#newsletter" data-vista="newsletter">Newsletter</a>
+      <a href="#categorias" data-vista="categorias">Categorías</a>
+      <a href="#ajustes"    data-vista="ajustes">Ajustes</a>
+      <a href="#cuenta"     data-vista="cuenta">Mi cuenta</a>
+    </nav>
+    <div class="side-foot">
+      <div class="side-user">
+        <span id="user-nombre">—</span>
+        <small id="user-email">—</small>
+      </div>
+      <button id="logout" class="link-btn">Salir</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="titulo">Resumen</h1>
+      <div class="topbar-actions" id="acciones"></div>
+    </header>
+    <div class="content" id="contenido"></div>
+  </main>
+</div>
+
+<!-- Modal genérico -->
+<div id="modal" class="modal hidden">
+  <div class="modal-back" data-cerrar></div>
+  <div class="modal-box">
+    <button class="modal-x" data-cerrar>×</button>
+    <div id="modal-contenido"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="/admin/admin.js"></script>
+</body>
+</html>

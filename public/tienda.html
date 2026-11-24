@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda — Merfina Joyas</title>
+<meta name="description" content="Cubre botones y corbatas joya. Piezas únicas hechas a mano.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Infant:ital,wght@0,500;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  .pag { background: var(--cream); padding: 180px 40px 80px; min-height: 100vh; }
+  .pag-head { text-align: center; max-width: 720px; margin: 0 auto 60px; }
+  .pag-head .eyebrow { color: #8a8276; font-size: 11px; letter-spacing: .4em; text-transform: uppercase; }
+  .pag-head h1 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(42px, 5vw, 64px); color: #141210; margin: 16px 0 20px; }
+  .pag-head p { color: #8a8276; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; }
+
+  .filtros { display: flex; gap: 10px; justify-content: center; margin-bottom: 50px; flex-wrap: wrap; }
+  .filtro { padding: 10px 24px; background: transparent; border: 1px solid #d8cfbe; color: #6a6054; font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; border-radius: 30px; cursor: pointer; transition: all .2s; }
+  .filtro:hover { border-color: #B89766; color: #141210; }
+  .filtro.on { background: #141210; color: #F8F3EA; border-color: #141210; }
+
+  .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 40px 28px; max-width: 1280px; margin: 0 auto; }
+  .prod {
+    background: #FBF7F0;
+    border: 1px solid transparent;
+    transition: border-color .25s, transform .25s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .prod:hover { border-color: #e6ddcf; }
+  .prod:hover .prod-img { transform: scale(1.02); }
+  .prod-img-wrap { aspect-ratio: 4/5; overflow: hidden; background: #F1E9DE; }
+  .prod-img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .prod-info { padding: 20px 20px 24px; text-align: center; }
+  .prod-nombre { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #141210; font-weight: 400; margin: 0 0 6px; }
+  .prod-cat { color: #a39a8c; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; margin-bottom: 10px; }
+  .prod-precio { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #8F7349; font-style: italic; }
+  .prod-precio s { color: #a39a8c; margin-right: 8px; font-size: 16px; }
+  .prod-agotado { color: #b4553c; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; }
+  .prod-destacado { display: inline-block; background: #B89766; color: #fff; padding: 3px 10px; font-size: 9px; letter-spacing: .25em; text-transform: uppercase; margin-bottom: 8px; }
+
+  .vacio { text-align: center; color: #8a8276; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; padding: 80px 20px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Piezas que transforman cada look</span>
+  <span class="dot">·</span>
+  <span>Envíos a todo Uruguay</span>
+</div>
+
+<nav class="nav scrolled">
+  <div class="nav-left">
+    <a href="/tienda" class="nav-link">Tienda</a>
+    <a href="/#historia" class="nav-link">Nuestra historia</a>
+    <a href="/#lookbook" class="nav-link">Lookbook</a>
+  </div>
+  <a href="/" class="logo">
+    <img class="logo-monogram logo-dark" src="/img/logo-gold.png" alt="Merfina">
+    <span class="logo-word">MERFINA</span>
+  </a>
+  <div class="nav-right">
+    <a href="/contacto" class="nav-link">Contacto</a>
+  </div>
+</nav>
+
+<main class="pag">
+  <div class="pag-head">
+    <div class="eyebrow">La colección</div>
+    <h1>Tienda</h1>
+    <p>Piezas que transforman la camisa en otra. Hechas a mano, en pocas unidades.</p>
+  </div>
+
+  <div class="filtros" id="filtros"></div>
+  <div class="prod-grid" id="productos">
+    <div class="vacio">Cargando piezas…</div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <img class="logo-monogram" src="/img/logo-gold.png" alt="Merfina">
+    <div class="footer-word">MERFINA</div>
+  </div>
+  <div class="footer-cols">
+    <div><h4>Tienda</h4><a href="/tienda">Catálogo</a><a href="/contacto">Contacto</a></div>
+    <div><h4>Seguinos</h4><a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a></div>
+  </div>
+  <div class="footer-bottom">© Merfina Joyas · Uruguay</div>
+</footer>
+
+<script>
+let catalogo = null;
+let filtroActivo = null;
+
+async function cargar() {
+  try {
+    const r = await fetch('/api/catalogo');
+    catalogo = await r.json();
+    renderFiltros();
+    render();
+  } catch (err) {
+    document.getElementById('productos').innerHTML =
+      '<div class="vacio">No pudimos cargar la tienda. Volvé en unos minutos.</div>';
+  }
+}
+
+function renderFiltros() {
+  const cont = document.getElementById('filtros');
+  const btns = ['<button class="filtro on" data-cat="">Todas</button>'];
+  catalogo.categorias.forEach(c => {
+    btns.push(`<button class="filtro" data-cat="${c.id}">${c.nombre}</button>`);
+  });
+  cont.innerHTML = btns.join('');
+  cont.querySelectorAll('.filtro').forEach(b => {
+    b.onclick = () => {
+      filtroActivo = b.dataset.cat || null;
+      cont.querySelectorAll('.filtro').forEach(x => x.classList.toggle('on', x === b));
+      render();
+    };
+  });
+}
+
+function render() {
+  const lista = filtroActivo
+    ? catalogo.productos.filter(p => p.categoria_id === filtroActivo)
+    : catalogo.productos;
+
+  if (!lista.length) {
+    document.getElementById('productos').innerHTML =
+      '<div class="vacio">Pronto vamos a sumar nuevas piezas.</div>';
+    return;
+  }
+
+  const cats = Object.fromEntries(catalogo.categorias.map(c => [c.id, c.nombre]));
+  document.getElementById('productos').innerHTML = lista.map(p => {
+    const img = p.imagenes?.[0]?.url || '/img/placeholder.png';
+    const agotado = p.stock <= 0;
+    return `
+      <a href="/producto/${p.slug}" class="prod">
+        <div class="prod-img-wrap"><img class="prod-img" src="${img}" alt="${p.nombre}"></div>
+        <div class="prod-info">
+          ${p.destacado ? '<div class="prod-destacado">Destacado</div>' : ''}
+          <div class="prod-cat">${cats[p.categoria_id] || ''}</div>
+          <h3 class="prod-nombre">${p.nombre}</h3>
+          <div class="prod-precio">
+            ${agotado ? '<span class="prod-agotado">Agotado</span>' :
+              `${p.precio_antes ? `<s>$ ${Number(p.precio_antes).toLocaleString('es-UY')}</s>` : ''}
+               $ ${Number(p.precio).toLocaleString('es-UY')}`}
+          </div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+cargar();
+</script>
+</body>
+</html>

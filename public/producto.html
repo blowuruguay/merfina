@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merfina Joyas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Infant:ital,wght@0,500;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  .pdp { background: var(--cream); padding: 150px 40px 80px; min-height: 100vh; }
+  .pdp-wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; }
+  @media (max-width: 900px) { .pdp-wrap { grid-template-columns: 1fr; gap: 40px; } .pdp { padding: 120px 20px 60px; } }
+
+  .pdp-fotos { display: grid; gap: 14px; }
+  .pdp-foto-ppal { aspect-ratio: 4/5; background: #F1E9DE; overflow: hidden; }
+  .pdp-foto-ppal img { width: 100%; height: 100%; object-fit: cover; }
+  .pdp-thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+  .pdp-thumbs .th { aspect-ratio: 1; background: #F1E9DE; overflow: hidden; cursor: pointer; border: 2px solid transparent; }
+  .pdp-thumbs .th.on { border-color: #B89766; }
+  .pdp-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+
+  .pdp-info .mig { color: #8a8276; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; margin-bottom: 18px; }
+  .pdp-info .mig a { color: #8a8276; text-decoration: none; }
+  .pdp-info .mig a:hover { color: #141210; }
+  .pdp-info h1 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(36px, 4vw, 52px); color: #141210; margin: 0 0 14px; line-height: 1.1; }
+  .pdp-precio { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #8F7349; font-style: italic; margin-bottom: 24px; }
+  .pdp-precio s { color: #a39a8c; margin-right: 10px; font-size: 22px; }
+  .pdp-stock { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #4a8f5c; margin-bottom: 30px; }
+  .pdp-stock.poco { color: #c6904a; }
+  .pdp-stock.cero { color: #b4553c; }
+  .pdp-desc { color: #6a6054; font-family: 'Cormorant Garamond', serif; font-size: 17px; line-height: 1.7; margin-bottom: 30px; }
+  .pdp-meta { border-top: 1px solid #e6ddcf; padding-top: 24px; margin-bottom: 30px; display: grid; gap: 12px; }
+  .pdp-meta div { display: flex; gap: 20px; font-size: 14px; }
+  .pdp-meta label { color: #8a8276; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; min-width: 120px; }
+  .pdp-meta span { color: #141210; font-family: 'Cormorant Garamond', serif; font-size: 17px; }
+
+  .pdp-ctas { display: flex; flex-direction: column; gap: 12px; }
+  .pdp-ctas a {
+    display: block; text-align: center; padding: 16px;
+    font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: .38em; text-transform: uppercase;
+    text-decoration: none; transition: all .2s;
+  }
+  .pdp-wa { background: #141210; color: #F8F3EA; }
+  .pdp-wa:hover { background: #8F7349; }
+  .pdp-mail { background: transparent; color: #141210; border: 1px solid #141210; }
+  .pdp-mail:hover { background: #141210; color: #F8F3EA; }
+
+  .vacio { text-align: center; color: #8a8276; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; padding: 80px 20px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Piezas que transforman cada look</span>
+  <span class="dot">·</span>
+  <span>Envíos a todo Uruguay</span>
+</div>
+
+<nav class="nav scrolled">
+  <div class="nav-left">
+    <a href="/tienda" class="nav-link">Tienda</a>
+    <a href="/#historia" class="nav-link">Nuestra historia</a>
+    <a href="/#lookbook" class="nav-link">Lookbook</a>
+  </div>
+  <a href="/" class="logo">
+    <img class="logo-monogram logo-dark" src="/img/logo-gold.png" alt="Merfina">
+    <span class="logo-word">MERFINA</span>
+  </a>
+  <div class="nav-right">
+    <a href="/contacto" class="nav-link">Contacto</a>
+  </div>
+</nav>
+
+<main class="pdp" id="main">
+  <div class="vacio">Cargando pieza…</div>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <img class="logo-monogram" src="/img/logo-gold.png" alt="Merfina">
+    <div class="footer-word">MERFINA</div>
+  </div>
+  <div class="footer-cols">
+    <div><h4>Tienda</h4><a href="/tienda">Catálogo</a><a href="/contacto">Contacto</a></div>
+    <div><h4>Seguinos</h4><a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a></div>
+  </div>
+  <div class="footer-bottom">© Merfina Joyas · Uruguay</div>
+</footer>
+
+<script>
+const slug = location.pathname.split('/')[2];
+if (!slug) location.href = '/tienda';
+
+(async () => {
+  try {
+    const [rProd, rAj] = await Promise.all([
+      fetch('/api/catalogo/' + slug),
+      fetch('/api/catalogo/ajustes')
+    ]);
+    if (!rProd.ok) throw new Error('No encontramos esa pieza');
+    const { producto: p } = await rProd.json();
+    const { ajustes } = await rAj.json();
+
+    document.title = p.nombre + ' — Merfina';
+
+    const imgs = p.imagenes?.length ? p.imagenes : [{ url: '/img/placeholder.png' }];
+    const stockTxt = p.stock <= 0 ? 'Agotado' : p.stock <= 2 ? `Últimas ${p.stock} unidades` : 'Disponible';
+    const stockCls = p.stock <= 0 ? 'cero' : p.stock <= 2 ? 'poco' : '';
+
+    const waBase = (ajustes.whatsapp || '').replace(/\/$/, '');
+    const waTexto = encodeURIComponent(`Hola! Me interesa la pieza "${p.nombre}" ($ ${Number(p.precio).toLocaleString('es-UY')}). ¿Está disponible?`);
+    const waUrl = waBase.includes('?') ? `${waBase}&text=${waTexto}` : `${waBase}?text=${waTexto}`;
+    const mailUrl = `mailto:${ajustes.email || ''}?subject=${encodeURIComponent('Consulta: ' + p.nombre)}&body=${waTexto}`;
+
+    document.getElementById('main').innerHTML = `
+      <div class="pdp-wrap">
+        <div class="pdp-fotos">
+          <div class="pdp-foto-ppal"><img id="foto-ppal" src="${imgs[0].url}" alt="${p.nombre}"></div>
+          ${imgs.length > 1 ? `<div class="pdp-thumbs">${imgs.map((i, ix) =>
+            `<div class="th ${ix === 0 ? 'on' : ''}" data-ix="${ix}"><img src="${i.url}"></div>`).join('')}</div>` : ''}
+        </div>
+        <div class="pdp-info">
+          <div class="mig"><a href="/tienda">Tienda</a> · ${p.nombre}</div>
+          <h1>${p.nombre}</h1>
+          <div class="pdp-precio">
+            ${p.precio_antes ? `<s>$ ${Number(p.precio_antes).toLocaleString('es-UY')}</s>` : ''}
+            $ ${Number(p.precio).toLocaleString('es-UY')}
+          </div>
+          <div class="pdp-stock ${stockCls}">${stockTxt}</div>
+          ${p.descripcion ? `<div class="pdp-desc">${escapar(p.descripcion)}</div>` : ''}
+          ${(p.materiales || p.medidas) ? `
+            <div class="pdp-meta">
+              ${p.materiales ? `<div><label>Materiales</label><span>${escapar(p.materiales)}</span></div>` : ''}
+              ${p.medidas    ? `<div><label>Medidas</label><span>${escapar(p.medidas)}</span></div>` : ''}
+            </div>` : ''}
+          <div class="pdp-ctas">
+            <a class="pdp-wa" href="${waUrl}" target="_blank">Consultar por WhatsApp</a>
+            <a class="pdp-mail" href="${mailUrl}">Escribir un correo</a>
+          </div>
+        </div>
+      </div>`;
+
+    document.querySelectorAll('.pdp-thumbs .th').forEach(th => {
+      th.onclick = () => {
+        document.getElementById('foto-ppal').src = imgs[Number(th.dataset.ix)].url;
+        document.querySelectorAll('.pdp-thumbs .th').forEach(x => x.classList.toggle('on', x === th));
+      };
+    });
+  } catch (err) {
+    document.getElementById('main').innerHTML = `<div class="vacio">${err.message}. <br><a href="/tienda" style="color:#8F7349">Volver a la tienda</a></div>`;
+  }
+})();
+
+function escapar(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>

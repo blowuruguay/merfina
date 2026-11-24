@@ -1,17 +1,20 @@
 {
   "name": "merfina",
-  "version": "0.1.0",
-  "description": "Merfina Joyas — sitio web",
+  "version": "0.2.0",
+  "description": "Merfina Joyas — sitio y panel",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "express": "^4.19.2",
-    "compression": "^1.7.4"
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.5"
   }
 }
