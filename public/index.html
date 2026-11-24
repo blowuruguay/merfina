@@ -13,33 +13,61 @@
 <body>
 
 <div class="topbar">
-  <span>Piezas que transforman cada look</span>
-  <span class="dot">·</span>
-  <span>Detalles elegidos con amor</span>
-  <span class="dot">·</span>
-  <span>Envíos a todo Uruguay</span>
+  <div class="topbar-track">
+    <span>Piezas que transforman cada look</span><span class="dot">·</span>
+    <span>Detalles elegidos con amor</span><span class="dot">·</span>
+    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
+    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
+    <span>Piezas que transforman cada look</span><span class="dot">·</span>
+    <span>Detalles elegidos con amor</span><span class="dot">·</span>
+    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
+    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
+  </div>
 </div>
 
 <nav class="nav">
+  <button class="nav-burger" aria-label="Menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <div class="nav-left">
     <a href="/tienda" class="nav-link">Tienda</a>
     <a href="#historia" class="nav-link">Nuestra historia</a>
     <a href="#lookbook" class="nav-link">Lookbook</a>
   </div>
-  <a href="#" class="logo">
+  <a href="/" class="logo">
     <img class="logo-monogram logo-light" src="/img/logo-cream.png" alt="Merfina">
     <img class="logo-monogram logo-dark" src="/img/logo-gold.png" alt="Merfina">
     <span class="logo-word">MERFINA</span>
   </a>
   <div class="nav-right">
-    <div class="icon-btn" title="Favoritos">
+    <a href="/contacto" class="icon-btn" title="Contacto" aria-label="Contacto">
       <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
-    </div>
-    <div class="icon-btn" title="Bolsa">
+    </a>
+    <a href="/tienda" class="icon-btn" title="Tienda" aria-label="Tienda">
       <svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8zm3 0a3 3 0 1 1 6 0"/></svg>
-    </div>
+    </a>
   </div>
 </nav>
+
+<div class="nav-mobile-back"></div>
+<div class="nav-mobile">
+  <a href="/" class="nml-brand">
+    <img src="/img/logo-gold.png" alt="Merfina">
+    <span>MERFINA</span>
+  </a>
+  <nav>
+    <a href="/tienda">Tienda</a>
+    <a href="/tienda?cat=cubre-botones">Cubre botones</a>
+    <a href="/tienda?cat=corbatas">Corbatas</a>
+    <a href="/#historia">Nuestra historia</a>
+    <a href="/#lookbook">Lookbook</a>
+    <a href="/contacto">Contacto</a>
+  </nav>
+  <div class="nml-foot">
+    <a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a>
+    <a href="https://wa.me/59891900341" target="_blank">WhatsApp</a>
+  </div>
+</div>
 
 <section class="hero">
   <div class="hero-side hero-left"><div class="hero-img"></div></div>

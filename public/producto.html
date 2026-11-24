@@ -53,12 +53,22 @@
 <body>
 
 <div class="topbar">
-  <span>Piezas que transforman cada look</span>
-  <span class="dot">·</span>
-  <span>Envíos a todo Uruguay</span>
+  <div class="topbar-track">
+    <span>Piezas que transforman cada look</span><span class="dot">·</span>
+    <span>Detalles elegidos con amor</span><span class="dot">·</span>
+    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
+    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
+    <span>Piezas que transforman cada look</span><span class="dot">·</span>
+    <span>Detalles elegidos con amor</span><span class="dot">·</span>
+    <span>Envíos a todo Uruguay</span><span class="dot">·</span>
+    <span>Hecho a mano en Uruguay</span><span class="dot">·</span>
+  </div>
 </div>
 
 <nav class="nav scrolled">
+  <button class="nav-burger" aria-label="Menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <div class="nav-left">
     <a href="/tienda" class="nav-link">Tienda</a>
     <a href="/#historia" class="nav-link">Nuestra historia</a>
@@ -72,6 +82,28 @@
     <a href="/contacto" class="nav-link">Contacto</a>
   </div>
 </nav>
+
+<div class="nav-mobile-back"></div>
+<div class="nav-mobile">
+  <a href="/" class="nml-brand">
+    <img src="/img/logo-gold.png" alt="Merfina">
+    <span>MERFINA</span>
+  </a>
+  <nav>
+    <a href="/tienda">Tienda</a>
+    <a href="/tienda?cat=cubre-botones">Cubre botones</a>
+    <a href="/tienda?cat=corbatas">Corbatas</a>
+    <a href="/#historia">Nuestra historia</a>
+    <a href="/#lookbook">Lookbook</a>
+    <a href="/contacto">Contacto</a>
+  </nav>
+  <div class="nml-foot">
+    <a href="https://instagram.com/merfinajoyas" target="_blank">Instagram</a>
+    <a href="https://wa.me/59891900341" target="_blank">WhatsApp</a>
+  </div>
+</div>
+
+<script src="/js/menu-mobile.js" defer></script>
 
 <main class="pdp" id="main">
   <div class="vacio">Cargando pieza…</div>
