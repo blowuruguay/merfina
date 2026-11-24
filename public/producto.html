@@ -205,8 +205,8 @@ if (!slug) location.href = '/tienda';
               ${p.medidas    ? `<div><label>Medidas</label><span>${escapar(p.medidas)}</span></div>` : ''}
             </div>` : ''}
           <div class="pdp-ctas">
-            <a class="pdp-wa" href="${waUrl}" target="_blank">Consultar por WhatsApp</a>
-            <a class="pdp-mail" href="${mailUrl}">Escribir un correo</a>
+            <button type="button" class="pdp-wa" id="btn-add-bolsa">Agregar a la bolsa</button>
+            <a class="pdp-mail" href="${waUrl}" target="_blank">Consultar por WhatsApp</a>
           </div>
         </div>
       </div>`;
@@ -217,6 +217,18 @@ if (!slug) location.href = '/tienda';
         document.querySelectorAll('.pdp-thumbs .th').forEach(x => x.classList.toggle('on', x === th));
       };
     });
+
+    // Agregar a la bolsa
+    document.getElementById('btn-add-bolsa').onclick = () => {
+      const categorias = { 'cubre-botones': 'Cubre botones', 'corbatas': 'Corbatas' };
+      window.merfinaBolsa?.agregar({
+        slug: p.slug,
+        nombre: p.nombre,
+        precio: p.precio,
+        imagen: imgs[0]?.url || '',
+        categoria: categorias[p.categoria_id] || ''
+      });
+    };
   } catch (err) {
     document.getElementById('main').innerHTML = `<div class="vacio">${err.message}. <br><a href="/tienda" style="color:#8F7349">Volver a la tienda</a></div>`;
   }
@@ -230,5 +242,6 @@ function escapar(s) {
 <a href="https://wa.me/59891900341?text=Hola%20Merfina%2C%20quer%C3%ADa%20hacer%20una%20consulta." target="_blank" rel="noopener" class="wa-float" aria-label="Escribinos por WhatsApp">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.823.74 5.472 2.034 7.77L0 32l8.436-2.004A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.09c-2.433 0-4.712-.68-6.653-1.86l-.478-.282-4.941 1.175 1.195-4.816-.311-.496A13.067 13.067 0 0 1 2.91 16C2.91 8.776 8.776 2.91 16 2.91c7.224 0 13.09 5.866 13.09 13.09 0 7.224-5.866 13.09-13.09 13.09zm7.49-9.805c-.41-.206-2.426-1.197-2.802-1.333-.375-.138-.649-.206-.922.206-.274.41-1.058 1.333-1.297 1.606-.239.274-.478.308-.887.103-.41-.205-1.73-.637-3.295-2.03-1.218-1.086-2.04-2.427-2.279-2.838-.239-.41-.026-.633.179-.837.183-.182.41-.478.615-.717.205-.239.274-.41.41-.683.138-.274.07-.513-.034-.717-.102-.206-.922-2.222-1.263-3.043-.333-.799-.671-.69-.922-.703-.239-.012-.512-.015-.785-.015-.274 0-.717.103-1.093.513-.376.41-1.434 1.4-1.434 3.414 0 2.014 1.467 3.96 1.672 4.235.205.274 2.886 4.407 6.993 6.182 2.443 1.054 3.398 1.145 4.616.963.743-.112 2.426-.99 2.77-1.947.343-.958.343-1.779.239-1.951-.102-.172-.376-.274-.787-.479z"/></svg>
 </a>
+<script src="/js/bolsa.js" defer></script>
 </body>
 </html>
