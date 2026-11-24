@@ -92,7 +92,7 @@ router.post('/preferencia', async (req, res) => {
         `insert into pedidos (estado, nombre, apellido, email, telefono, documento,
                               envio_tipo, direccion, nota,
                               subtotal, envio_costo, total, canal)
-         values ('consulta',$1,$2,$3,$4,nullif($5,''),$6,$7,nullif($8,''),$9,$10,$11,'web')
+         values ('consulta',$1,$2,$3,$4,nullif($5,''),$6,$7::jsonb,nullif($8,''),$9,$10,$11,'web')
          returning id, numero`,
         [nombre, apellido || null, email, telefono, documento,
          envioTipo, direccion ? JSON.stringify(direccion) : null, nota,

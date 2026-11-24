@@ -300,7 +300,8 @@ const CATEGORIAS = { 'cubre-botones': 'Cubre botones', 'corbatas': 'Corbatas' };
     const catNom = CATEGORIAS[p.categoria_id] || '';
 
     const waBase = (ajustes.whatsapp || '').replace(/\/$/, '');
-    const waTexto = encodeURIComponent(`Hola! Me interesa la pieza "${p.nombre}" (${p.precio ? '$ ' + Number(p.precio).toLocaleString('es-UY') : 'consultar precio'}). ¿Está disponible?`);
+    const precioTxt = p.precio ? '$ ' + Number(p.precio).toLocaleString('es-UY') : 'a consultar';
+    const waTexto = encodeURIComponent(`Hola! Me interesa la pieza "${p.nombre}" (${precioTxt}). ¿Está disponible?`);
     const waUrl = waBase.includes('?') ? `${waBase}&text=${waTexto}` : `${waBase}?text=${waTexto}`;
 
     document.getElementById('main').innerHTML = `
@@ -318,8 +319,7 @@ const CATEGORIAS = { 'cubre-botones': 'Cubre botones', 'corbatas': 'Corbatas' };
         <div class="pdp-info">
           <div class="pdp-mig">
             <a href="/tienda">Tienda</a>
-            <span class="sep">·</span>
-            <a href="/tienda?cat=${p.categoria_id}">${esc(catNom)}</a>
+            ${p.categoria_id && catNom ? `<span class="sep">·</span><a href="/tienda?cat=${esc(p.categoria_id)}">${esc(catNom)}</a>` : ''}
           </div>
           <h1>${esc(p.nombre)}</h1>
           <div class="pdp-precio-row">

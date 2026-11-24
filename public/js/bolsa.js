@@ -57,8 +57,10 @@
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   function precio(n) {
-    if (!n) return '—';
-    return '$ ' + Number(n).toLocaleString('es-UY');
+    if (n == null || n === '') return '—';
+    const num = Number(n);
+    if (!num) return 'A consultar';
+    return '$ ' + num.toLocaleString('es-UY');
   }
 
   function renderBolsa() {

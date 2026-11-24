@@ -1497,3 +1497,93 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
 
 /* Evitar que el text-fill-color se resetee al dark en inputs iOS */
 input, textarea, select { -webkit-text-fill-color: var(--text); }
+
+/* ============ Grid de productos en la home ============ */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px 24px;
+  margin-top: 48px;
+}
+.shop-skeleton {
+  display: contents;
+}
+.shop-grid .shop-card {
+  background: #FBF7F0;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border: 1px solid transparent;
+  transition: transform .3s ease, border-color .3s ease;
+}
+.shop-grid .shop-card:hover {
+  transform: translateY(-4px);
+  border-color: #e6ddcf;
+}
+.shop-grid .shop-card .img {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: #F1E9DE;
+}
+.shop-grid .shop-card .img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .5s ease;
+}
+.shop-grid .shop-card:hover .img img { transform: scale(1.05); }
+.shop-grid .shop-card .body {
+  padding: 18px 16px 24px;
+  text-align: center;
+}
+.shop-grid .shop-card .cat {
+  color: #a39a8c;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.shop-grid .shop-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 22px;
+  color: #141210;
+  margin: 0 0 6px;
+}
+.shop-grid .shop-card .precio {
+  font-family: 'Cormorant Garamond', serif;
+  color: #8F7349;
+  font-style: italic;
+  font-size: 17px;
+}
+.shop-grid .shop-card .agotado {
+  color: #b4553c;
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+.shop-cta {
+  text-align: center;
+  margin-top: 60px;
+}
+.shop-cta .btn-dark {
+  min-width: 300px;
+  padding: 18px 40px;
+}
+
+.shop-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #8a8276;
+  font-size: 20px;
+}
+
+@media (max-width: 960px) {
+  .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 22px 12px; }
+  .shop-grid .shop-card .body { padding: 14px 10px 20px; }
+  .shop-grid .shop-card h3 { font-size: 18px; }
+  .shop-grid .shop-card .precio { font-size: 15px; }
+  .shop-cta .btn-dark { min-width: auto; width: 100%; max-width: 320px; }
+}

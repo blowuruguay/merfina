@@ -198,7 +198,13 @@ function renderFiltros() {
     b.onclick = () => {
       filtroActivo = b.dataset.cat || null;
       cont.querySelectorAll('.filtro').forEach(x => x.classList.toggle('on', x === b));
+      // Mantiene la URL en sync para compartir y refrescar sin perder filtro
+      const nuevaUrl = filtroActivo
+        ? `${location.pathname}?cat=${encodeURIComponent(filtroActivo)}`
+        : location.pathname;
+      history.replaceState(null, '', nuevaUrl);
       render();
+      window.scrollTo({ top: document.querySelector('.filtros').offsetTop - 120, behavior: 'smooth' });
     };
   });
 }
@@ -228,9 +234,10 @@ function render() {
           <div class="prod-cat">${cats[p.categoria_id] || ''}</div>
           <h3 class="prod-nombre">${p.nombre}</h3>
           <div class="prod-precio">
-            ${agotado ? '<span class="prod-agotado">Agotado</span>' :
-              `${p.precio_antes ? `<s>$ ${Number(p.precio_antes).toLocaleString('es-UY')}</s>` : ''}
-               $ ${Number(p.precio).toLocaleString('es-UY')}`}
+            ${agotado ? '<span class="prod-agotado">Agotado</span>'
+              : !p.precio ? 'A consultar'
+              : `${p.precio_antes ? `<s>$ ${Number(p.precio_antes).toLocaleString('es-UY')}</s>` : ''}
+                 $ ${Number(p.precio).toLocaleString('es-UY')}`}
           </div>
         </div>
       </a>`;

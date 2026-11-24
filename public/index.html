@@ -129,15 +129,22 @@
       <span class="eyebrow">La tienda</span>
       <h2>La colección</h2>
     </div>
-    <div class="shop-tabs">
-      <button class="active">Todo</button>
-      <button>Cubre botones</button>
-      <button>Corbatas</button>
+    <div class="shop-tabs" id="shop-tabs">
+      <button class="active" data-cat="">Todo</button>
+      <button data-cat="cubre-botones">Cubre botones</button>
+      <button data-cat="corbatas">Corbatas</button>
     </div>
   </div>
-  <div class="shop-empty">
-    <h3>La tienda se está preparando.</h3>
-    <a href="https://www.instagram.com/merfinajoyas/" class="btn btn-dark">Ver novedades en Instagram</a>
+  <div class="shop-grid" id="shop-grid">
+    <div class="shop-skeleton">
+      <div class="skeleton" style="aspect-ratio:4/5"></div>
+      <div class="skeleton" style="aspect-ratio:4/5"></div>
+      <div class="skeleton" style="aspect-ratio:4/5"></div>
+      <div class="skeleton" style="aspect-ratio:4/5"></div>
+    </div>
+  </div>
+  <div class="shop-cta">
+    <a href="/tienda" class="btn btn-dark">Ver toda la colección</a>
   </div>
 </section>
 

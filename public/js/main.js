@@ -62,3 +62,64 @@ if (mburger && mpanel) {
   document.querySelector('.nav-mobile-back')?.addEventListener('click', closeMenu);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 }
+
+// === Grid de productos en la home (sección La colección) ===
+(async function cargarShopHome() {
+  const grid = document.getElementById('shop-grid');
+  const tabs = document.getElementById('shop-tabs');
+  if (!grid || !tabs) return;
+
+  const CATS = { 'cubre-botones': 'Cubre botones', 'corbatas': 'Corbatas' };
+  const PERMITIDAS = ['cubre-botones', 'corbatas'];
+  let filtro = '';
+  let productos = [];
+
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function render() {
+    const lista = (filtro
+      ? productos.filter(p => p.categoria_id === filtro)
+      : productos.filter(p => PERMITIDAS.includes(p.categoria_id))
+    ).slice(0, 8); // máx 8 en la home
+
+    if (!lista.length) {
+      grid.innerHTML = `<div class="shop-vacio">Pronto vamos a sumar nuevas piezas.</div>`;
+      return;
+    }
+    grid.innerHTML = lista.map(p => {
+      const img = p.imagenes?.[0]?.url || '/img/placeholder.png';
+      const agotado = p.stock <= 0;
+      const precio = !p.precio ? 'A consultar' : '$ ' + Number(p.precio).toLocaleString('es-UY');
+      return `
+        <a href="/producto/${esc(p.slug)}" class="shop-card">
+          <div class="img"><img src="${esc(img)}" alt="${esc(p.nombre)}" loading="lazy"></div>
+          <div class="body">
+            <div class="cat">${esc(CATS[p.categoria_id] || '')}</div>
+            <h3>${esc(p.nombre)}</h3>
+            <div class="precio">${agotado ? '<span class="agotado">Agotado</span>' : precio}</div>
+          </div>
+        </a>`;
+    }).join('');
+  }
+
+  try {
+    const r = await fetch('/api/catalogo');
+    const data = await r.json();
+    productos = (data.productos || []).filter(p => PERMITIDAS.includes(p.categoria_id));
+
+    tabs.querySelectorAll('button').forEach(b => {
+      b.onclick = () => {
+        filtro = b.dataset.cat || '';
+        tabs.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+        render();
+      };
+    });
+
+    render();
+  } catch (err) {
+    grid.innerHTML = `<div class="shop-vacio">No pudimos cargar el catálogo. Volvé en un rato.</div>`;
+  }
+})();
