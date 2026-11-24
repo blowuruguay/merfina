@@ -100,6 +100,25 @@ async function crearAdmin() {
   console.log(`[arranque] Usuario del panel listo: ${rows[0].email}`);
 }
 
+async function sincronizarPrecioStockInicial() {
+  // Productos del seed inicial que siguen en precio=0 y stock=1
+  // (estado virgen de la primera importación): les pasa a precio 100
+  // y stock 10. No toca los que ya fueron editados desde el panel.
+  const r = await db.query(
+    `update productos
+        set precio = 100, stock = 10
+      where slug = any($1)
+        and precio = 0
+        and stock = 1`,
+    [[
+      'alma','amapola','dalia-celeste','ebano','felino','gardenia',
+      'latido','magnolia','nazar','noir','dalia-rosa',
+      'corbata-cleo','corbata-ambar','corbata-gala','corbata-lila',
+      'corbata-moka','corbata-nina'
+    ]]);
+  if (r.rowCount > 0) console.log(`[arranque] Precio/stock inicial aplicado a ${r.rowCount} productos`);
+}
+
 async function sincronizarDescripciones() {
   // Para los productos del seed inicial que ya están en la base con
   // descripción vacía, les carga la descripción del catalogo-inicial.json.
@@ -156,6 +175,7 @@ async function preparar() {
     await importarCatalogo();
     await limpiarCategorias();
     await sincronizarDescripciones();
+    await sincronizarPrecioStockInicial();
     estado.ok = true;
   } catch (err) {
     console.error('[arranque] Falló:', err.message);

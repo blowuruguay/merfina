@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu pedido — Merfina</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  body { background: var(--cream); }
+  .nav-simple { padding: 28px 40px; text-align: center; border-bottom: 1px solid #e6ddcf; }
+  .nav-simple a { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-simple img { height: 32px; }
+  .nav-simple span { font-family: 'Cormorant Garamond', serif; letter-spacing: .32em; color: #8F7349; font-size: 18px; }
+
+  .pg-wrap { max-width: 640px; margin: 0 auto; padding: 100px 24px 100px; text-align: center; }
+  .pg-icon { width: 90px; height: 90px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 36px; }
+  .pg-icon svg { width: 44px; height: 44px; stroke-width: 2; }
+  .pg-icon.ok { background: #e2f0e6; color: #4a8f5c; }
+  .pg-icon.pend { background: #faefdf; color: #c6904a; }
+  .pg-icon.err { background: #f5e2db; color: #b4553c; }
+
+  .pg-eyebrow { color: #8a8276; font-size: 10.5px; letter-spacing: .42em; text-transform: uppercase; margin-bottom: 20px; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(42px, 5.5vw, 64px); color: #141210; margin: 0 0 20px; line-height: 1.05; letter-spacing: -.005em; }
+  .pg-sub { color: #6a6054; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; line-height: 1.6; margin: 0 0 40px; }
+
+  .pg-box { background: #FBF7F0; border: 1px solid #e6ddcf; padding: 28px; margin: 0 0 32px; display: inline-block; text-align: left; min-width: 320px; }
+  .pg-box .lb { color: #8a8276; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; }
+  .pg-box .vl { font-family: 'Cormorant Garamond', serif; color: #141210; font-size: 22px; margin-top: 6px; }
+  .pg-box .vl.gold { color: #8F7349; font-style: italic; }
+
+  .pg-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .pg-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: .36em; text-transform: uppercase; text-decoration: none; cursor: pointer; border-radius: 2px; transition: all .2s; }
+  .pg-btn.primary { background: #141210; color: var(--cream); border: 1px solid #141210; }
+  .pg-btn.primary:hover { background: #8F7349; border-color: #8F7349; }
+  .pg-btn.out { background: transparent; color: #141210; border: 1px solid #d8cfbe; }
+  .pg-btn.out:hover { border-color: #141210; }
+</style>
+</head>
+<body>
+
+<nav class="nav-simple">
+  <a href="/">
+    <img src="/img/logo-gold.png" alt="Merfina">
+    <span>MERFINA</span>
+  </a>
+</nav>
+
+<main class="pg-wrap" id="main">
+  <div class="pg-eyebrow">Cargando…</div>
+</main>
+
+<script>
+const estado = location.pathname.split('/')[2] || 'exito';
+const params = new URLSearchParams(location.search);
+const pedidoId = params.get('id') || localStorage.getItem('merfina_last_pedido');
+
+const CONFIG = {
+  exito: {
+    cls: 'ok',
+    eyebrow: 'Gracias',
+    titulo: '¡Compra confirmada!',
+    sub: 'Recibimos tu pedido y ya estamos preparándolo. Te vamos a avisar por mail cuando lo despachemos.',
+    svg: '<path d="M20 6L9 17l-5-5"/>'
+  },
+  pendiente: {
+    cls: 'pend',
+    eyebrow: 'En proceso',
+    titulo: 'Tu pago está pendiente',
+    sub: 'Mercado Pago está confirmando el pago. Te vamos a avisar por mail apenas se acredite.',
+    svg: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>'
+  },
+  error: {
+    cls: 'err',
+    eyebrow: 'Hubo un problema',
+    titulo: 'El pago no se completó',
+    sub: 'Tu pedido quedó guardado. Podés intentar pagar de nuevo o escribirnos por WhatsApp.',
+    svg: '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/>'
+  }
+};
+
+async function cargar() {
+  const cfg = CONFIG[estado] || CONFIG.exito;
+  let pedidoHtml = '';
+  if (pedidoId) {
+    try {
+      const r = await fetch('/api/checkout/pedido/' + pedidoId);
+      const data = await r.json();
+      if (r.ok && data.pedido) {
+        const p = data.pedido;
+        pedidoHtml = `
+          <div class="pg-box">
+            <div class="lb">Número de pedido</div>
+            <div class="vl">#${p.numero}</div>
+            <div class="lb" style="margin-top:16px">Total</div>
+            <div class="vl gold">$ ${Number(p.total).toLocaleString('es-UY')}</div>
+          </div>`;
+      }
+    } catch {}
+  }
+
+  document.getElementById('main').innerHTML = `
+    <div class="pg-icon ${cfg.cls}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${cfg.svg}</svg>
+    </div>
+    <div class="pg-eyebrow">${cfg.eyebrow}</div>
+    <h1>${cfg.titulo}</h1>
+    <p class="pg-sub">${cfg.sub}</p>
+    ${pedidoHtml}
+    <div class="pg-ctas">
+      ${estado === 'error' ? `<a href="/checkout" class="pg-btn primary">Reintentar</a>` : ''}
+      <a href="/tienda" class="pg-btn ${estado === 'error' ? 'out' : 'primary'}">Seguir mirando</a>
+      <a href="https://wa.me/59891900341" target="_blank" class="pg-btn out">Escribirnos por WhatsApp</a>
+    </div>
+  `;
+}
+cargar();
+</script>
+</body>
+</html>

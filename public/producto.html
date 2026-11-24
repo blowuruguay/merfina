@@ -292,7 +292,10 @@ const CATEGORIAS = { 'cubre-botones': 'Cubre botones', 'corbatas': 'Corbatas' };
 
     const imgs = p.imagenes?.length ? p.imagenes : [{ url: '/img/placeholder.png' }];
     const agotado = p.stock <= 0;
-    const stockTxt = agotado ? 'Agotado' : p.stock <= 2 ? `Últimas ${p.stock} unidades` : 'Disponible';
+    const stockTxt = agotado ? 'Agotado'
+      : p.stock === 1 ? 'Última unidad'
+      : p.stock <= 3  ? `Últimas ${p.stock} unidades`
+      :                 'Disponible';
     const stockCls = agotado ? 'cero' : p.stock <= 2 ? 'poco' : '';
     const catNom = CATEGORIAS[p.categoria_id] || '';
 

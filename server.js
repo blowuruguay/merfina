@@ -85,6 +85,8 @@ app.use((req, res, next) => {
 
 // -------------------- API --------------------
 app.use('/api/catalogo',         require('./routes/catalogo'));
+app.use('/api/checkout',         require('./routes/checkout'));
+app.use('/api/mercadopago',      require('./routes/mercadopago'));
 app.use('/api/contacto',         require('./routes/contacto'));
 app.use('/api/newsletter',       require('./routes/newsletter'));
 app.get('/baja-correos',         require('./routes/newsletter').bajaCorreos);
@@ -135,7 +137,8 @@ app.get('*', (req, res) => {
   }
 
   // Páginas conocidas de la tienda
-  const paginas = ['tienda', 'producto', 'contacto', 'carrito', 'nosotros', 'cambios', 'envios'];
+  const paginas = ['tienda', 'producto', 'contacto', 'carrito', 'nosotros',
+                   'cambios', 'envios', 'checkout', 'pedido'];
   const primera = req.path.split('/')[1];
   if (paginas.includes(primera)) {
     const archivo = path.join(__dirname, 'public', `${primera}.html`);

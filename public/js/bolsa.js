@@ -92,11 +92,6 @@
 
     // Pie con total + CTA
     const total = c.reduce((s, i) => s + (i.precio || 0) * (i.cantidad || 1), 0);
-    const mensajeWA = encodeURIComponent(
-      'Hola Merfina, me interesan estas piezas:\n' +
-      c.map(i => `· ${i.nombre} (${precio(i.precio)}${i.cantidad > 1 ? ' × ' + i.cantidad : ''})`).join('\n') +
-      `\n\nTotal: ${precio(total)}`
-    );
     let foot = document.querySelector('.bolsa-foot');
     if (!foot) {
       foot = document.createElement('div');
@@ -104,10 +99,11 @@
       document.querySelector('.bolsa-drawer').appendChild(foot);
     }
     foot.innerHTML = `
-      <div class="bolsa-tot"><span>Total</span><span>${precio(total)}</span></div>
-      <a href="https://wa.me/59891900341?text=${mensajeWA}" target="_blank" rel="noopener" class="bolsa-cta">
-        Consultar por WhatsApp
-      </a>
+      <div class="bolsa-tot"><span>Subtotal</span><span>${precio(total)}</span></div>
+      <a href="/checkout" class="bolsa-cta">Finalizar compra</a>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--text-soft);letter-spacing:.06em">
+        Envío se calcula en el checkout
+      </div>
     `;
 
     // Eventos de borrar

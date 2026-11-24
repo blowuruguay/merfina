@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Merfina</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  :root { --soft:#8a8276; --pale:#F1E9DE; --rule:#e6ddcf; }
+  body { background: var(--cream); }
+  .co-nav { padding: 28px 40px; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; background: var(--cream); }
+  .co-nav .back { font-size: 10.5px; letter-spacing: .34em; text-transform: uppercase; color: #141210; text-decoration: none; justify-self: start; }
+  .co-nav .back:hover { color: #8F7349; }
+  .co-nav .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; justify-self: center; }
+  .co-nav .logo img { height: 28px; }
+  .co-nav .logo span { font-family: 'Cormorant Garamond', serif; letter-spacing: .32em; color: #8F7349; font-size: 16px; }
+  .co-nav .seguro { justify-self: end; color: var(--soft); font-size: 11px; letter-spacing: .25em; text-transform: uppercase; }
+  .co-nav .seguro svg { width: 12px; height: 12px; vertical-align: middle; margin-right: 6px; }
+
+  .co-wrap { display: grid; grid-template-columns: 1.1fr 1fr; max-width: 1240px; margin: 0 auto; padding: 50px 40px 80px; gap: 60px; }
+  @media (max-width: 900px) { .co-wrap { grid-template-columns: 1fr; padding: 32px 20px 60px; gap: 32px; } }
+
+  .co-col h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 36px; color: #141210; margin: 0 0 8px; letter-spacing: -.005em; }
+  .co-col .sub { color: var(--soft); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; margin-bottom: 32px; }
+
+  .co-section { margin-bottom: 36px; }
+  .co-section h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 24px; color: #141210; margin: 0 0 18px; display: flex; align-items: center; gap: 12px; }
+  .co-section h3 .n { width: 26px; height: 26px; border-radius: 50%; background: #141210; color: var(--cream); font-size: 11px; display: inline-flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; }
+
+  label { display: block; color: var(--soft); font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; margin: 14px 0 6px; }
+  input[type=text], input[type=email], input[type=tel], textarea, select {
+    width: 100%; padding: 12px 14px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px; color: #141210;
+    border-radius: 2px;
+    transition: border-color .2s;
+  }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: #B89766; }
+  textarea { min-height: 80px; resize: vertical; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 500px) { .row, .row-3 { grid-template-columns: 1fr; } }
+
+  /* Opciones de envío */
+  .envios { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .env-opt { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 2px; cursor: pointer; background: #fff; transition: all .2s; }
+  .env-opt:hover { border-color: #B89766; }
+  .env-opt.on { border-color: #141210; background: var(--pale); }
+  .env-opt input { width: auto; margin: 0; accent-color: #141210; }
+  .env-opt .info { flex: 1; }
+  .env-opt .nom { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #141210; }
+  .env-opt .det { color: var(--soft); font-size: 13px; }
+  .env-opt .costo { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #8F7349; font-style: italic; }
+  .env-opt .costo.gratis { color: #4a8f5c; font-style: normal; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; }
+
+  /* Resumen */
+  .co-resumen { background: #FBF7F0; border: 1px solid var(--rule); padding: 32px; border-radius: 2px; position: sticky; top: 20px; align-self: start; }
+  .co-resumen h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 24px; color: #141210; margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .co-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+  .co-item { display: grid; grid-template-columns: 60px 1fr auto; gap: 12px; align-items: center; }
+  .co-item img { width: 60px; height: 76px; object-fit: cover; background: var(--pale); }
+  .co-item .n { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #141210; }
+  .co-item .c { color: var(--soft); font-size: 12px; }
+  .co-item .p { font-family: 'Cormorant Garamond', serif; color: #8F7349; font-style: italic; }
+
+  .co-totales { border-top: 1px solid var(--rule); padding-top: 16px; margin-top: 10px; }
+  .co-totales .ln { display: flex; justify-content: space-between; padding: 6px 0; }
+  .co-totales .ln span:first-child { color: var(--soft); font-size: 13px; }
+  .co-totales .ln span:last-child { font-family: 'Cormorant Garamond', serif; color: #141210; font-size: 16px; }
+  .co-totales .total { padding-top: 14px; margin-top: 10px; border-top: 1px solid var(--rule); }
+  .co-totales .total span:first-child { color: #141210; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; font-family: 'Montserrat', sans-serif; }
+  .co-totales .total span:last-child { font-size: 28px; font-style: italic; color: #8F7349; font-family: 'Cormorant Garamond', serif; }
+
+  .co-pagar { width: 100%; margin-top: 24px; padding: 18px; background: #141210; color: var(--cream); border: 0; font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: .38em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: background .2s, transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .co-pagar:hover { background: #8F7349; transform: translateY(-1px); }
+  .co-pagar:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  .co-pagar svg { width: 16px; height: 16px; }
+
+  .co-small { color: var(--soft); font-size: 12px; text-align: center; margin-top: 12px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .co-err { background: #f5e2db; color: #b4553c; padding: 12px 16px; border-radius: 2px; margin-top: 12px; font-size: 13px; display: none; }
+  .co-err.show { display: block; }
+
+  .vacio { text-align: center; padding: 80px 20px; color: var(--soft); font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; }
+  .vacio a { color: #8F7349; margin-left: 8px; }
+</style>
+</head>
+<body>
+
+<nav class="co-nav">
+  <a href="/tienda" class="back">← Volver a la tienda</a>
+  <a href="/" class="logo">
+    <img src="/img/logo-gold.png" alt="Merfina">
+    <span>MERFINA</span>
+  </a>
+  <div class="seguro">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+    Checkout seguro
+  </div>
+</nav>
+
+<main id="main">
+  <div class="vacio">Cargando…</div>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+
+function precio(n) { return '$ ' + Number(n || 0).toLocaleString('es-UY'); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+let opciones = [];
+let envioSeleccionado = 'retiro';
+let gratisDesde = 0;
+let cart = [];
+
+async function iniciar() {
+  cart = JSON.parse(localStorage.getItem('merfina_cart') || '[]');
+  if (!cart.length) {
+    $('#main').innerHTML = `<div class="vacio">Tu bolsa está vacía<a href="/tienda">Ir a la tienda</a></div>`;
+    return;
+  }
+
+  // Cargamos opciones de envío
+  try {
+    const r = await fetch('/api/checkout/opciones-envio');
+    const data = await r.json();
+    opciones = data.opciones;
+    gratisDesde = data.gratisDesde || 0;
+  } catch (err) {
+    opciones = [
+      { id: 'retiro',     nombre: 'Retiro en showroom', detalle: 'Coordinamos por WhatsApp',       costo: 0 },
+      { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: 190 },
+      { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC, 2 a 3 días hábiles', costo: 290 }
+    ];
+  }
+
+  render();
+}
+
+function subtotal() {
+  return cart.reduce((s, i) => s + (i.precio || 0) * (i.cantidad || 1), 0);
+}
+
+function costoEnvio() {
+  const op = opciones.find(x => x.id === envioSeleccionado);
+  if (!op) return 0;
+  if (op.costo === 0) return 0;
+  if (gratisDesde > 0 && subtotal() >= gratisDesde) return 0;
+  return op.costo;
+}
+
+function render() {
+  const sub = subtotal();
+  const env = costoEnvio();
+  const total = sub + env;
+
+  $('#main').innerHTML = `
+    <div class="co-wrap">
+      <div class="co-col">
+        <h2>Finalizar compra</h2>
+        <p class="sub">Completá los datos y pagás con Mercado Pago.</p>
+
+        <form id="form-co" class="co-section">
+          <h3><span class="n">1</span> Datos de contacto</h3>
+          <div class="row">
+            <div><label>Nombre *</label><input type="text" name="nombre" required></div>
+            <div><label>Apellido</label><input type="text" name="apellido"></div>
+          </div>
+          <div class="row">
+            <div><label>Correo *</label><input type="email" name="email" required></div>
+            <div><label>Teléfono *</label><input type="tel" name="telefono" required placeholder="099 000 000"></div>
+          </div>
+          <label>Documento (CI, opcional)</label>
+          <input type="text" name="documento" placeholder="1.234.567-8">
+        </form>
+
+        <div class="co-section">
+          <h3><span class="n">2</span> Envío</h3>
+          <div class="envios" id="envios">
+            ${opciones.map(op => {
+              const gratis = op.costo === 0 ? 'Gratis' : (gratisDesde > 0 && sub >= gratisDesde ? 'Gratis' : precio(op.costo));
+              const isGratis = gratis === 'Gratis';
+              return `
+              <label class="env-opt ${envioSeleccionado === op.id ? 'on' : ''}" data-env="${op.id}">
+                <input type="radio" name="envio" value="${op.id}" ${envioSeleccionado === op.id ? 'checked' : ''}>
+                <div class="info">
+                  <div class="nom">${esc(op.nombre)}</div>
+                  <div class="det">${esc(op.detalle)}</div>
+                </div>
+                <div class="costo ${isGratis ? 'gratis' : ''}">${gratis}</div>
+              </label>`;
+            }).join('')}
+          </div>
+          <div id="dir-box" style="display:${envioSeleccionado === 'retiro' ? 'none' : 'block'}">
+            <div class="row">
+              <div><label>Calle y número *</label><input type="text" name="calle" ${envioSeleccionado !== 'retiro' ? 'required' : ''}></div>
+              <div><label>Apto / piso</label><input type="text" name="apto"></div>
+            </div>
+            <div class="row-3">
+              <div><label>Barrio / Localidad</label><input type="text" name="barrio"></div>
+              <div><label>Departamento</label><input type="text" name="depto" placeholder="Montevideo"></div>
+              <div><label>Código postal</label><input type="text" name="cp"></div>
+            </div>
+            <div id="agencia-box" style="display:${envioSeleccionado === 'interior' ? 'block' : 'none'}">
+              <label>Agencia DAC más cercana</label>
+              <input type="text" name="agencia" placeholder="Nombre o ciudad">
+            </div>
+          </div>
+        </div>
+
+        <div class="co-section">
+          <h3><span class="n">3</span> Nota (opcional)</h3>
+          <textarea name="nota" placeholder="Para regalo, horario de entrega, lo que necesites avisarnos"></textarea>
+        </div>
+      </div>
+
+      <aside class="co-resumen">
+        <h3>Tu pedido</h3>
+        <div class="co-items">
+          ${cart.map(i => `
+            <div class="co-item">
+              <img src="${esc(i.imagen || '/img/placeholder.png')}" alt="">
+              <div>
+                <div class="n">${esc(i.nombre)}</div>
+                <div class="c">${esc(i.categoria || '')} ${i.cantidad > 1 ? '· × ' + i.cantidad : ''}</div>
+              </div>
+              <div class="p">${precio((i.precio || 0) * (i.cantidad || 1))}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="co-totales">
+          <div class="ln"><span>Subtotal</span><span>${precio(sub)}</span></div>
+          <div class="ln"><span>Envío</span><span>${env === 0 ? '—' : precio(env)}</span></div>
+          <div class="ln total"><span>Total</span><span>${precio(total)}</span></div>
+        </div>
+        <button type="button" class="co-pagar" id="btn-pagar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+          Pagar con Mercado Pago
+        </button>
+        <div class="co-small">Pago seguro procesado por Mercado Pago</div>
+        <div class="co-err" id="err"></div>
+      </aside>
+    </div>`;
+
+  // Cambio de envío
+  document.querySelectorAll('.env-opt').forEach(el => {
+    el.onclick = () => {
+      envioSeleccionado = el.dataset.env;
+      render();
+    };
+  });
+
+  // Click pagar
+  $('#btn-pagar').onclick = pagar;
+}
+
+async function pagar() {
+  const form = $('#form-co');
+  const fd = new FormData(form);
+  const err = $('#err');
+  err.classList.remove('show');
+
+  // Validación mínima en el front; el backend revalida igual
+  if (!fd.get('nombre')) return mostrarError('Escribí tu nombre');
+  if (!fd.get('email')) return mostrarError('Escribí tu correo');
+  if (!fd.get('telefono')) return mostrarError('Dejanos un teléfono');
+  if (envioSeleccionado !== 'retiro' && !fd.get('calle')) return mostrarError('Dejanos la dirección del envío');
+
+  const btn = $('#btn-pagar');
+  btn.disabled = true;
+  btn.innerHTML = 'Procesando...';
+
+  try {
+    const r = await fetch('/api/checkout/preferencia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: fd.get('nombre'),
+        apellido: fd.get('apellido'),
+        email: fd.get('email'),
+        telefono: fd.get('telefono'),
+        documento: fd.get('documento'),
+        envio_tipo: envioSeleccionado,
+        direccion: envioSeleccionado === 'retiro' ? null : {
+          calle: fd.get('calle'), apto: fd.get('apto'),
+          barrio: fd.get('barrio'), depto: fd.get('depto'),
+          cp: fd.get('cp'), agencia: fd.get('agencia')
+        },
+        nota: fd.get('nota'),
+        items: cart.map(i => ({ slug: i.slug, cantidad: i.cantidad || 1 }))
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'No pudimos procesar el pedido');
+
+    if (data.sin_mp) {
+      // Fallback: Mercado Pago no configurado → WhatsApp
+      const msg = encodeURIComponent(
+        `Hola Merfina, armé el pedido #${data.pedido_numero} por ${precio(data.total)} y quería coordinar el pago. Mi mail: ${fd.get('email')}`);
+      localStorage.removeItem('merfina_cart');
+      location.href = `https://wa.me/59891900341?text=${msg}`;
+      return;
+    }
+
+    // Guardamos el id y vaciamos carrito, redirigimos a MP
+    localStorage.setItem('merfina_last_pedido', data.pedido_id);
+    localStorage.removeItem('merfina_cart');
+    location.href = data.init_point;
+  } catch (e) {
+    mostrarError(e.message);
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg> Pagar con Mercado Pago';
+  }
+}
+
+function mostrarError(msg) {
+  const err = $('#err');
+  err.textContent = msg;
+  err.classList.add('show');
+  err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+iniciar();
+</script>
+</body>
+</html>
