@@ -131,7 +131,7 @@ function precio(n) { return '$ ' + Number(n || 0).toLocaleString('es-UY'); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 let opciones = [];
-let envioSeleccionado = 'retiro';
+let envioSeleccionado = 'montevideo';
 let modalidadInterior = 'domicilio';
 let metodoPago = 'mercadopago';
 let gratisDesde = 0;
@@ -151,7 +151,6 @@ async function iniciar() {
     gratisDesde = data.gratisDesde || 0;
   } catch (err) {
     opciones = [
-      { id: 'retiro',     nombre: 'Retiro en showroom', detalle: 'Coordinamos por WhatsApp',       costo: 0 },
       { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: 190 },
       { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles', costo: 290 }
     ];
@@ -219,7 +218,7 @@ function render() {
             }).join('')}
           </div>
 
-          <div id="dir-box" style="display:${envioSeleccionado === 'retiro' ? 'none' : 'block'}">
+          <div id="dir-box">
             ${envioSeleccionado === 'interior' ? `
               <label style="margin-top:22px">¿Cómo preferís recibir el envío?</label>
               <div class="sub-opts">
@@ -356,13 +355,11 @@ async function pagar() {
   if (!fd.get('nombre'))   return mostrarError('Escribí tu nombre');
   if (!fd.get('email'))    return mostrarError('Escribí tu correo');
   if (!fd.get('telefono')) return mostrarError('Dejanos un teléfono');
-  if (envioSeleccionado !== 'retiro') {
-    if (!dir.depto)  return mostrarError('Elegí un departamento');
-    if (!dir.ciudad) return mostrarError('Dejanos la ciudad o localidad');
-    const esAgencia = envioSeleccionado === 'interior' && modalidadInterior === 'agencia';
-    if (esAgencia && !dir.agencia) return mostrarError('Decinos la agencia DAC donde retirar');
-    if (!esAgencia && !dir.calle)  return mostrarError('Dejanos la dirección');
-  }
+  if (!dir.depto)  return mostrarError('Elegí un departamento');
+  if (!dir.ciudad) return mostrarError('Dejanos la ciudad o localidad');
+  const esAgencia = envioSeleccionado === 'interior' && modalidadInterior === 'agencia';
+  if (esAgencia && !dir.agencia) return mostrarError('Decinos la agencia DAC donde retirar');
+  if (!esAgencia && !dir.calle)  return mostrarError('Dejanos la dirección');
 
   const btn = $('#btn-pagar');
   btn.disabled = true;
@@ -380,7 +377,7 @@ async function pagar() {
         documento: fd.get('documento'),
         envio_tipo: envioSeleccionado,
         envio_modalidad: envioSeleccionado === 'interior' ? modalidadInterior : '',
-        direccion: envioSeleccionado === 'retiro' ? null : dir,
+        direccion: dir,
         metodo_pago: metodoPago,
         nota,
         items: cart.map(i => ({ slug: i.slug, cantidad: i.cantidad || 1 }))

@@ -30,7 +30,6 @@ async function ajustesEnvio() {
 }
 
 function costoEnvio(tipo, modalidad, subtotal, aj) {
-  if (tipo === 'retiro') return 0;
   // Agencia DAC es un poco más barato que a domicilio en el interior.
   // Dejamos el costo configurable y aplicamos descuento si la agencia
   // está lista para retirar.
@@ -56,7 +55,7 @@ router.post('/preferencia', async (req, res) => {
   if (!nombre)              return res.status(400).json({ error: 'Escribí tu nombre' });
   if (!MAIL.test(email))    return res.status(400).json({ error: 'Revisá el correo' });
   if (!telefono)            return res.status(400).json({ error: 'Falta el teléfono' });
-  if (!['retiro','montevideo','interior'].includes(envioTipo)) {
+  if (!['montevideo','interior'].includes(envioTipo)) {
     return res.status(400).json({ error: 'Elegí un tipo de envío' });
   }
   if (envioTipo === 'interior' && !['domicilio','agencia'].includes(envioModalidad)) {
@@ -183,7 +182,6 @@ router.get('/opciones-envio', async (req, res) => {
     const aj = await ajustesEnvio();
     res.json({
       opciones: [
-        { id: 'retiro',     nombre: 'Retiro en showroom', detalle: 'Coordinamos por WhatsApp',       costo: 0 },
         { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles',             costo: aj.montevideo },
         { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles', costo: aj.interior }
       ],
