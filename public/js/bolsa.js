@@ -32,9 +32,9 @@
     try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
     catch { return []; }
   }
-  function setCart(c) {
+  function setCart(c, pop = false) {
     localStorage.setItem(CART_KEY, JSON.stringify(c));
-    actualizarContador();
+    actualizarContador(pop);
     if (document.body.classList.contains('bolsa-open')) renderBolsa();
   }
   window.merfinaBolsa = {
@@ -43,7 +43,7 @@
       const existe = c.find(x => x.slug === item.slug);
       if (existe) existe.cantidad = (existe.cantidad || 1) + 1;
       else c.push({ ...item, cantidad: 1 });
-      setCart(c);
+      setCart(c, true);
       abrir();
     },
     quitar(slug) {
@@ -121,12 +121,21 @@
   }
 
   // ---------- Contador (burbuja en el ícono de bolsa) ----------
-  function actualizarContador() {
+  function actualizarContador(pop = false) {
     const n = getCart().reduce((s, i) => s + (i.cantidad || 1), 0);
     document.querySelectorAll('.bag-count').forEach(el => {
       el.textContent = n > 0 ? n : '';
-      el.style.display = n > 0 ? '' : 'none';
+      el.style.display = n > 0 ? 'inline-flex' : 'none';
+      if (pop) {
+        el.classList.remove('pop');
+        void el.offsetWidth; // forzar reflow para reiniciar la animación
+        el.classList.add('pop');
+      }
     });
+    // Feedback táctil en mobile cuando cambia
+    if (pop && 'vibrate' in navigator) {
+      try { navigator.vibrate(12); } catch {}
+    }
   }
 
   // ---------- Tooltip favoritos ----------
