@@ -24,15 +24,12 @@
     --co-ok:     #3f8f56;
     --co-err:    #b4553c;
     --co-shadow: 0 2px 20px -8px rgba(60,40,10,.08);
-    --co-shadow-hover: 0 8px 30px -10px rgba(60,40,10,.14);
     --co-radius: 14px;
     --co-radius-sm: 10px;
   }
 
   body { background: #faf6ed; margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--co-text); -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
-
-  /* Reset inputs: iOS iOS */
   input, select, textarea, button { font-family: inherit; }
 
   /* ---------- Nav ---------- */
@@ -49,7 +46,7 @@
     justify-self: start;
     display: inline-flex; align-items: center; gap: 8px;
     font-size: 13px; font-weight: 500; color: var(--co-text);
-    text-decoration: none; letter-spacing: .01em;
+    text-decoration: none;
     padding: 10px 14px; border-radius: 999px;
     transition: background .18s;
   }
@@ -66,61 +63,95 @@
   .co-nav .seguro svg { width: 14px; height: 14px; stroke-width: 2; color: var(--co-gold-d); }
 
   /* ---------- Layout ---------- */
-  .co-wrap { max-width: 1240px; margin: 0 auto; padding: 40px 32px 100px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; }
-  @media (max-width: 920px) { .co-wrap { grid-template-columns: 1fr; padding: 24px 16px 160px; gap: 24px; } }
+  .co-wrap { max-width: 1180px; margin: 0 auto; padding: 36px 32px 100px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; }
+  @media (max-width: 920px) { .co-wrap { grid-template-columns: 1fr; padding: 20px 16px 140px; gap: 20px; } }
+
+  /* ---------- Stepper ---------- */
+  .stepper {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 560px; margin: 0 auto 32px;
+    position: relative;
+  }
+  .stepper::before {
+    content: ''; position: absolute; top: 18px; left: 18px; right: 18px;
+    height: 1.5px; background: var(--co-rule); z-index: 0;
+  }
+  .stepper .step-fill {
+    position: absolute; top: 18px; left: 18px;
+    height: 1.5px; background: var(--co-dark); z-index: 0;
+    transition: width .35s ease;
+  }
+  .st {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer;
+  }
+  .st .n {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--co-white); color: var(--co-soft);
+    border: 1.5px solid var(--co-rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    transition: all .25s;
+  }
+  .st.done .n { background: var(--co-dark); color: var(--co-cream); border-color: var(--co-dark); }
+  .st.done .n::before {
+    content: ''; width: 12px; height: 7px;
+    border-left: 2px solid var(--co-cream); border-bottom: 2px solid var(--co-cream);
+    transform: rotate(-45deg) translate(1px, -1px);
+    position: absolute;
+  }
+  .st.done .n span { display: none; }
+  .st.active .n {
+    background: var(--co-dark); color: var(--co-cream); border-color: var(--co-dark);
+    box-shadow: 0 0 0 4px rgba(20,18,16,.08);
+  }
+  .st .lb {
+    margin-top: 10px; font-size: 11px; font-weight: 500;
+    color: var(--co-soft); letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .st.active .lb, .st.done .lb { color: var(--co-dark); }
+
+  @media (max-width: 500px) {
+    .st .lb { font-size: 10px; }
+    .st:not(.active):not(.done) .lb { display: none; }
+    .stepper { max-width: none; margin-bottom: 24px; }
+  }
 
   /* ---------- Títulos ---------- */
   .co-head h1 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
-    font-size: clamp(32px, 4vw, 44px);
+    font-size: clamp(28px, 3.6vw, 40px);
     margin: 0 0 6px;
     color: var(--co-dark);
     letter-spacing: -.01em;
     line-height: 1.1;
   }
-  .co-head p { margin: 0 0 32px; color: var(--co-soft); font-size: 14.5px; line-height: 1.55; }
+  .co-head p { margin: 0 0 24px; color: var(--co-soft); font-size: 14.5px; line-height: 1.55; }
 
-  /* ---------- Cards de sección ---------- */
+  /* ---------- Card del paso ---------- */
   .card {
     background: var(--co-white);
     border: 1px solid var(--co-rule);
     border-radius: var(--co-radius);
-    padding: 28px;
-    margin-bottom: 18px;
+    padding: 32px;
     box-shadow: var(--co-shadow);
   }
-  .card-head {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 20px;
+
+  .panel { animation: slide-in .25s ease; }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateX(8px); }
+    to   { opacity: 1; transform: translateX(0); }
   }
-  .step-n {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--co-dark); color: var(--co-cream);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
-    flex-shrink: 0;
-  }
-  .step-txt { }
-  .step-txt .t {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: 22px;
-    color: var(--co-dark);
-    line-height: 1.1;
-  }
-  .step-txt .st { color: var(--co-soft); font-size: 13px; margin-top: 2px; }
 
   /* ---------- Inputs ---------- */
   .field { margin-bottom: 14px; }
   .field > label {
     display: block;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--co-text);
-    margin-bottom: 7px;
-    letter-spacing: 0;
-    text-transform: none;
+    font-size: 12px; font-weight: 500;
+    color: var(--co-text); margin-bottom: 7px;
   }
   .field > label .opt { color: var(--co-mute); font-weight: 400; margin-left: 4px; }
 
@@ -131,8 +162,7 @@
     border: 1.5px solid var(--co-rule);
     background: var(--co-white);
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: var(--co-text);
+    font-size: 15px; color: var(--co-text);
     border-radius: var(--co-radius-sm);
     transition: border-color .15s, box-shadow .15s, background .15s;
     -webkit-appearance: none;
@@ -140,8 +170,7 @@
   }
   input::placeholder, textarea::placeholder { color: var(--co-mute); }
   input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--co-gold);
+    outline: none; border-color: var(--co-gold);
     box-shadow: 0 0 0 4px rgba(184,151,102,.14);
     background: #fffdf8;
   }
@@ -153,20 +182,17 @@
   }
   textarea { min-height: 86px; resize: vertical; line-height: 1.5; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  @media (max-width: 500px) { .row, .row-3 { grid-template-columns: 1fr; } }
+  @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
 
   /* ---------- Opciones radio tipo card ---------- */
-  .opts { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .opts { display: flex; flex-direction: column; gap: 10px; }
   .opt {
     display: flex; align-items: center; gap: 14px;
     padding: 16px 18px;
     border: 1.5px solid var(--co-rule);
     border-radius: var(--co-radius-sm);
-    background: var(--co-white);
-    cursor: pointer;
+    background: var(--co-white); cursor: pointer;
     transition: all .18s;
-    position: relative;
   }
   .opt:hover { border-color: #d6c8ad; background: #fffdf8; }
   .opt.on {
@@ -178,30 +204,20 @@
     width: 20px; height: 20px; border-radius: 50%;
     border: 1.5px solid var(--co-rule);
     display: flex; align-items: center; justify-content: center;
-    transition: border-color .18s;
-    flex-shrink: 0;
+    flex-shrink: 0; transition: border-color .18s;
   }
   .opt .radio::after {
     content: ''; width: 10px; height: 10px; border-radius: 50%;
-    background: var(--co-dark); transform: scale(0);
-    transition: transform .18s;
+    background: var(--co-dark); transform: scale(0); transition: transform .18s;
   }
   .opt.on .radio { border-color: var(--co-dark); }
   .opt.on .radio::after { transform: scale(1); }
   .opt .info { flex: 1; }
-  .opt .info .nom {
-    font-weight: 600; color: var(--co-dark);
-    font-size: 15px; letter-spacing: 0;
-  }
+  .opt .info .nom { font-weight: 600; color: var(--co-dark); font-size: 15px; }
   .opt .info .det { color: var(--co-soft); font-size: 13px; margin-top: 2px; }
-  .opt .meta {
-    font-weight: 500; color: var(--co-gold-d);
-    font-size: 14px; white-space: nowrap;
-  }
+  .opt .meta { font-weight: 500; color: var(--co-gold-d); font-size: 14px; white-space: nowrap; }
   .opt .meta.ok { color: var(--co-ok); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-  .opt input[type=radio] { display: none; }
 
-  /* Sub-opciones (agencia o domicilio) */
   .sub-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 6px; }
   @media (max-width: 500px) { .sub-opts { grid-template-columns: 1fr; } }
   .sub-opt {
@@ -218,45 +234,107 @@
   .sub-opt .det { font-size: 12px; color: var(--co-soft); margin-top: 3px; }
 
   .nota {
-    margin-top: 10px; padding: 12px 14px;
+    margin-top: 14px; padding: 12px 14px;
     background: var(--co-sand);
     border-radius: var(--co-radius-sm);
     color: var(--co-text);
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 13px; line-height: 1.5;
     display: flex; align-items: flex-start; gap: 10px;
   }
   .nota svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--co-gold-d); }
+
+  /* ---------- Review (paso final) ---------- */
+  .review-sec { padding: 18px 0; border-bottom: 1px solid var(--co-rule); }
+  .review-sec:last-of-type { border-bottom: 0; }
+  .review-sec .rs-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .review-sec .rs-head .t { font-size: 12px; font-weight: 500; color: var(--co-soft); text-transform: uppercase; letter-spacing: .08em; }
+  .review-sec .rs-head .edit {
+    background: none; border: 0;
+    color: var(--co-gold-d); font-size: 12px; font-weight: 500;
+    cursor: pointer; padding: 4px 8px; border-radius: 6px;
+    transition: background .15s;
+  }
+  .review-sec .rs-head .edit:hover { background: var(--co-sand); }
+  .review-sec .rs-body { font-size: 14.5px; color: var(--co-dark); line-height: 1.55; }
+  .review-sec .rs-body .m { color: var(--co-soft); font-size: 13px; }
+
+  /* ---------- Navegación entre pasos ---------- */
+  .wizard-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 24px; gap: 12px;
+  }
+  .btn-back {
+    background: var(--co-white);
+    border: 1.5px solid var(--co-rule);
+    color: var(--co-text);
+    padding: 14px 24px;
+    border-radius: var(--co-radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-back:hover { border-color: var(--co-dark); }
+  .btn-back svg { width: 16px; height: 16px; }
+
+  .btn-next {
+    flex: 1; max-width: 300px;
+    background: var(--co-dark);
+    border: 0; color: var(--co-cream);
+    padding: 15px 32px;
+    border-radius: var(--co-radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    transition: all .18s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn-next:hover {
+    background: var(--co-gold-d);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px -10px rgba(143,115,73,.5);
+  }
+  .btn-next:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  .btn-next svg { width: 16px; height: 16px; }
+  .btn-next.transfer { background: var(--co-gold-d); }
+  .btn-next.transfer:hover { background: var(--co-gold); }
+
+  @media (max-width: 500px) {
+    .btn-back { padding: 13px 16px; font-size: 13px; }
+    .btn-back span { display: none; }
+    .btn-next { padding: 14px 20px; font-size: 13px; }
+  }
 
   /* ---------- Resumen ---------- */
   .co-resumen {
     background: var(--co-white);
     border: 1px solid var(--co-rule);
     border-radius: var(--co-radius);
-    padding: 28px;
+    padding: 26px;
     position: sticky; top: 96px; align-self: start;
     box-shadow: var(--co-shadow);
   }
   .co-resumen h3 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
-    font-size: 24px; color: var(--co-dark);
-    margin: 0 0 22px;
-    padding-bottom: 18px;
+    font-size: 22px; color: var(--co-dark);
+    margin: 0 0 20px;
+    padding-bottom: 16px;
     border-bottom: 1px solid var(--co-rule);
     letter-spacing: -.005em;
   }
   .co-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
-  .co-item { display: grid; grid-template-columns: 60px 1fr auto; gap: 14px; align-items: center; }
-  .co-item img {
-    width: 60px; height: 72px; object-fit: cover;
-    background: var(--co-sand); border-radius: 8px;
-  }
+  .co-item { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; }
+  .co-item img { width: 56px; height: 68px; object-fit: cover; background: var(--co-sand); border-radius: 8px; }
   .co-item .n { font-weight: 600; font-size: 14px; color: var(--co-dark); }
   .co-item .c { color: var(--co-soft); font-size: 12px; margin-top: 2px; }
   .co-item .p { font-weight: 500; color: var(--co-dark); font-size: 14px; }
 
-  .co-totales { border-top: 1px solid var(--co-rule); padding-top: 14px; margin-top: 4px; }
+  .co-totales { border-top: 1px solid var(--co-rule); padding-top: 14px; }
   .co-totales .ln { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; }
   .co-totales .ln span:first-child { color: var(--co-soft); font-size: 13px; }
   .co-totales .ln span:last-child { color: var(--co-dark); font-size: 14px; font-weight: 500; }
@@ -266,41 +344,12 @@
     border-top: 1px solid var(--co-rule);
     display: flex; justify-content: space-between; align-items: baseline;
   }
-  .co-totales .total .lb { color: var(--co-dark); font-weight: 600; font-size: 14px; letter-spacing: 0; }
+  .co-totales .total .lb { color: var(--co-dark); font-weight: 600; font-size: 14px; }
   .co-totales .total .amt {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; font-weight: 500;
+    font-size: 30px; font-weight: 500;
     color: var(--co-dark); letter-spacing: -.01em;
   }
-
-  .co-pagar {
-    width: 100%; margin-top: 22px;
-    padding: 18px;
-    background: var(--co-dark); color: var(--co-cream);
-    border: 0; border-radius: var(--co-radius-sm);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px; font-weight: 600;
-    letter-spacing: 0; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: all .18s;
-  }
-  .co-pagar:hover {
-    background: var(--co-gold-d);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 24px -10px rgba(143,115,73,.5);
-  }
-  .co-pagar:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
-  .co-pagar svg { width: 18px; height: 18px; }
-  .co-pagar.transfer { background: var(--co-gold-d); }
-  .co-pagar.transfer:hover { background: var(--co-gold); }
-
-  .co-small {
-    color: var(--co-soft);
-    font-size: 12px; text-align: center;
-    margin-top: 12px; line-height: 1.5;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .co-small svg { width: 12px; height: 12px; }
 
   .co-err {
     background: #fdecdf; color: var(--co-err);
@@ -309,9 +358,13 @@
     display: none;
     border: 1px solid #f4cdb4;
   }
-  .co-err.show { display: block; }
+  .co-err.show { display: block; animation: shake .35s; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60% { transform: translateX(-4px); }
+    40%,80% { transform: translateX(4px); }
+  }
 
-  /* ---------- Vacío ---------- */
   .vacio {
     max-width: 440px; margin: 100px auto;
     text-align: center; padding: 48px 32px;
@@ -327,8 +380,7 @@
   }
   .vacio p { color: var(--co-soft); margin: 0 0 24px; font-size: 14px; }
   .vacio a {
-    display: inline-block;
-    padding: 14px 32px;
+    display: inline-block; padding: 14px 32px;
     background: var(--co-dark); color: var(--co-cream);
     text-decoration: none; font-weight: 600; font-size: 13px;
     border-radius: var(--co-radius-sm);
@@ -336,27 +388,14 @@
   }
   .vacio a:hover { background: var(--co-gold-d); }
 
-  /* ---------- Mobile ---------- */
   @media (max-width: 920px) {
     .co-nav { padding: 14px 16px; }
     .co-nav .back span { display: none; }
-    .co-nav .seguro { padding: 7px 10px; font-size: 11px; }
     .co-nav .seguro span { display: none; }
-    .co-head h1 { font-size: 28px; }
-    .card { padding: 20px; margin-bottom: 14px; }
-    .card-head { margin-bottom: 16px; gap: 12px; }
-    .step-n { width: 28px; height: 28px; font-size: 12px; }
-    .step-txt .t { font-size: 19px; }
-    .co-resumen {
-      position: static;
-      padding: 22px;
-    }
-    .co-totales .total .amt { font-size: 28px; }
-    .co-pagar {
-      position: sticky; bottom: 16px;
-      box-shadow: 0 10px 30px -8px rgba(20,18,16,.25);
-      padding: 17px;
-    }
+    .co-nav .seguro { padding: 7px 10px; }
+    .card { padding: 22px; }
+    .co-head h1 { font-size: 26px; }
+    .co-resumen { position: static; }
     .co-items { max-height: 260px; overflow-y: auto; }
   }
 </style>
@@ -396,15 +435,30 @@ const $ = s => document.querySelector(s);
 function precio(n) { return '$ ' + Number(n || 0).toLocaleString('es-UY'); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-let opciones = [];
-let envioSeleccionado = 'montevideo';
-let modalidadInterior = 'domicilio';
-let metodoPago = 'mercadopago';
-let cart = [];
+const PASOS = [
+  { id: 1, lb: 'Datos' },
+  { id: 2, lb: 'Envío' },
+  { id: 3, lb: 'Pago' },
+  { id: 4, lb: 'Confirmar' }
+];
+
+const estado = {
+  paso: 1,
+  opciones: [],
+  envioTipo: 'montevideo',
+  modalidad: 'domicilio',
+  metodoPago: 'mercadopago',
+  cart: [],
+  datos: {
+    nombre: '', apellido: '', email: '', telefono: '', documento: '',
+    calle: '', apto: '', barrio: '', depto: '', ciudad: '', cp: '', agencia: '',
+    nota: ''
+  }
+};
 
 async function iniciar() {
-  cart = JSON.parse(localStorage.getItem('merfina_cart') || '[]');
-  if (!cart.length) {
+  estado.cart = JSON.parse(localStorage.getItem('merfina_cart') || '[]');
+  if (!estado.cart.length) {
     $('#main').innerHTML = `
       <div class="vacio">
         <div class="ico">✦</div>
@@ -414,217 +468,316 @@ async function iniciar() {
       </div>`;
     return;
   }
-
   try {
     const r = await fetch('/api/checkout/opciones-envio');
     const data = await r.json();
-    opciones = data.opciones;
+    estado.opciones = data.opciones;
   } catch {
-    opciones = [
+    estado.opciones = [
       { id: 'montevideo', nombre: 'Envío a Montevideo', detalle: '1 a 2 días hábiles' },
       { id: 'interior',   nombre: 'Envío al interior',  detalle: 'Agencia DAC o domicilio, 1 a 3 días hábiles' }
     ];
   }
-
   render();
 }
 
 function subtotal() {
-  return cart.reduce((s, i) => s + (i.precio || 0) * (i.cantidad || 1), 0);
+  return estado.cart.reduce((s, i) => s + (i.precio || 0) * (i.cantidad || 1), 0);
+}
+
+function guardarInputs() {
+  document.querySelectorAll('input, select, textarea').forEach(el => {
+    if (el.name && el.name in estado.datos) estado.datos[el.name] = el.value;
+  });
+}
+
+function stepperHtml() {
+  const pct = ((estado.paso - 1) / (PASOS.length - 1)) * 100;
+  return `
+    <div class="stepper">
+      <div class="step-fill" style="width:calc(${pct}% - ${pct > 0 ? '0px' : '36px'})"></div>
+      ${PASOS.map(p => {
+        const cls = estado.paso === p.id ? 'active' : estado.paso > p.id ? 'done' : '';
+        return `
+          <div class="st ${cls}" data-goto="${p.id}">
+            <div class="n"><span>${p.id}</span></div>
+            <div class="lb">${p.lb}</div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function panelDatos() {
+  const d = estado.datos;
+  return `
+    <div class="co-head">
+      <h1>Datos de contacto</h1>
+      <p>Para avisarte del estado del pedido.</p>
+    </div>
+    <div class="card panel">
+      <div class="row">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" name="nombre" value="${esc(d.nombre)}" required>
+        </div>
+        <div class="field">
+          <label>Apellido <span class="opt">(opcional)</span></label>
+          <input type="text" name="apellido" value="${esc(d.apellido)}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Correo</label>
+          <input type="email" name="email" value="${esc(d.email)}" required placeholder="tu@correo.com">
+        </div>
+        <div class="field">
+          <label>Teléfono</label>
+          <input type="tel" name="telefono" value="${esc(d.telefono)}" required placeholder="099 000 000">
+        </div>
+      </div>
+      <div class="field">
+        <label>Documento <span class="opt">(opcional, CI)</span></label>
+        <input type="text" name="documento" value="${esc(d.documento)}" placeholder="1.234.567-8">
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <a href="/tienda" class="btn-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span>Volver a la tienda</span>
+      </a>
+      <button class="btn-next" id="btn-next">
+        Continuar al envío
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function panelEnvio() {
+  const d = estado.datos;
+  const deptOptions = DEPARTAMENTOS.map(dp =>
+    `<option value="${dp}" ${d.depto === dp || (estado.envioTipo === 'montevideo' && !d.depto && dp === 'Montevideo') ? 'selected' : ''}>${dp}</option>`
+  ).join('');
+
+  return `
+    <div class="co-head">
+      <h1>¿A dónde lo mandamos?</h1>
+      <p>Elegí el tipo de envío y dejanos la dirección.</p>
+    </div>
+    <div class="card panel">
+      <div class="opts">
+        ${estado.opciones.map(op => `
+          <label class="opt ${estado.envioTipo === op.id ? 'on' : ''}" data-env="${op.id}">
+            <div class="radio"></div>
+            <div class="info">
+              <div class="nom">${esc(op.nombre)}</div>
+              <div class="det">${esc(op.detalle)}</div>
+            </div>
+            <div class="meta ok">A coordinar</div>
+          </label>`).join('')}
+      </div>
+      <div class="nota">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+        <span>El costo del envío va a cargo del comprador. Se paga al retirar en la agencia o al delivery.</span>
+      </div>
+
+      ${estado.envioTipo === 'interior' ? `
+        <div style="margin-top:22px">
+          <label style="display:block;font-size:13px;font-weight:500;margin-bottom:10px;color:var(--co-text)">¿Cómo preferís recibir el envío?</label>
+          <div class="sub-opts">
+            <div class="sub-opt ${estado.modalidad === 'domicilio' ? 'on' : ''}" data-mod="domicilio">
+              <div class="nom">Envío a domicilio</div>
+              <div class="det">Hasta la puerta de tu casa</div>
+            </div>
+            <div class="sub-opt ${estado.modalidad === 'agencia' ? 'on' : ''}" data-mod="agencia">
+              <div class="nom">Retiro en agencia</div>
+              <div class="det">DAC — más económico</div>
+            </div>
+          </div>
+        </div>` : ''}
+
+      <div style="margin-top:22px">
+        <div class="row">
+          <div class="field">
+            <label>Departamento</label>
+            <select name="depto" required>
+              <option value="">Elegir…</option>
+              ${deptOptions}
+            </select>
+          </div>
+          <div class="field">
+            <label>Ciudad o localidad</label>
+            <input type="text" name="ciudad" value="${esc(d.ciudad)}" required placeholder="Pocitos, Punta del Este…">
+          </div>
+        </div>
+
+        ${estado.envioTipo !== 'interior' || estado.modalidad === 'domicilio' ? `
+          <div class="row">
+            <div class="field">
+              <label>Calle y número</label>
+              <input type="text" name="calle" value="${esc(d.calle)}" required placeholder="Av. Italia 1234">
+            </div>
+            <div class="field">
+              <label>Apto / piso <span class="opt">(opcional)</span></label>
+              <input type="text" name="apto" value="${esc(d.apto)}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Barrio <span class="opt">(opcional)</span></label>
+              <input type="text" name="barrio" value="${esc(d.barrio)}">
+            </div>
+            <div class="field">
+              <label>Código postal <span class="opt">(opcional)</span></label>
+              <input type="text" name="cp" value="${esc(d.cp)}">
+            </div>
+          </div>
+        ` : `
+          <div class="field">
+            <label>Agencia DAC más cercana</label>
+            <input type="text" name="agencia" value="${esc(d.agencia)}" required placeholder="Nombre o ciudad de la agencia">
+          </div>
+        `}
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn-back" data-back>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span>Volver</span>
+      </button>
+      <button class="btn-next" id="btn-next">
+        Continuar al pago
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function panelPago() {
+  return `
+    <div class="co-head">
+      <h1>Elegí cómo pagar</h1>
+      <p>Las dos opciones son seguras y procesan al momento.</p>
+    </div>
+    <div class="card panel">
+      <div class="opts">
+        <label class="opt ${estado.metodoPago === 'mercadopago' ? 'on' : ''}" data-pago="mercadopago">
+          <div class="radio"></div>
+          <div class="info">
+            <div class="nom">Mercado Pago</div>
+            <div class="det">Tarjetas de crédito, débito y Mercado Pago</div>
+          </div>
+          <div class="meta" style="color:var(--co-gold-d)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/>
+            </svg>
+          </div>
+        </label>
+        <label class="opt ${estado.metodoPago === 'transferencia' ? 'on' : ''}" data-pago="transferencia">
+          <div class="radio"></div>
+          <div class="info">
+            <div class="nom">Transferencia bancaria</div>
+            <div class="det">Te damos los datos y coordinamos por WhatsApp</div>
+          </div>
+          <div class="meta" style="color:var(--co-gold-d)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 7l8-4 8 4M4 7v11h16V7M4 7h16M9 11v4M15 11v4"/>
+            </svg>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn-back" data-back>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span>Volver</span>
+      </button>
+      <button class="btn-next" id="btn-next">
+        Revisar pedido
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function panelConfirmar() {
+  const d = estado.datos;
+  const envioOp = estado.opciones.find(o => o.id === estado.envioTipo) || estado.opciones[0];
+  const modalidadTxt = estado.envioTipo === 'interior'
+    ? (estado.modalidad === 'agencia' ? ' · Retiro en agencia DAC' : ' · A domicilio')
+    : '';
+  const metodoTxt = estado.metodoPago === 'mercadopago' ? 'Mercado Pago' : 'Transferencia bancaria';
+
+  const esAgencia = estado.envioTipo === 'interior' && estado.modalidad === 'agencia';
+  const dirTxt = esAgencia
+    ? `Agencia: ${d.agencia} · ${d.ciudad}, ${d.depto}`
+    : [d.calle + (d.apto ? ' · Apto ' + d.apto : ''), d.barrio, d.ciudad, d.depto, d.cp && 'CP ' + d.cp].filter(Boolean).join(' · ');
+
+  return `
+    <div class="co-head">
+      <h1>Revisá y confirmá</h1>
+      <p>Último paso antes de pagar.</p>
+    </div>
+    <div class="card panel">
+      <div class="review-sec">
+        <div class="rs-head"><div class="t">Contacto</div><button class="edit" data-edit="1">Editar</button></div>
+        <div class="rs-body">
+          <div>${esc(d.nombre)} ${esc(d.apellido)}</div>
+          <div class="m">${esc(d.email)} · ${esc(d.telefono)}</div>
+          ${d.documento ? `<div class="m">CI: ${esc(d.documento)}</div>` : ''}
+        </div>
+      </div>
+      <div class="review-sec">
+        <div class="rs-head"><div class="t">Envío</div><button class="edit" data-edit="2">Editar</button></div>
+        <div class="rs-body">
+          <div>${esc(envioOp?.nombre || '')}${esc(modalidadTxt)}</div>
+          <div class="m">${esc(dirTxt)}</div>
+        </div>
+      </div>
+      <div class="review-sec">
+        <div class="rs-head"><div class="t">Pago</div><button class="edit" data-edit="3">Editar</button></div>
+        <div class="rs-body">${esc(metodoTxt)}</div>
+      </div>
+      <div class="review-sec">
+        <div class="rs-head"><div class="t">Mensaje <span style="text-transform:none;color:var(--co-mute)">(opcional)</span></div></div>
+        <div class="rs-body" style="margin-top:6px">
+          <textarea name="nota" placeholder="Es para regalo, llegar antes del jueves…">${esc(d.nota)}</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn-back" data-back>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span>Volver</span>
+      </button>
+      <button class="btn-next ${estado.metodoPago === 'transferencia' ? 'transfer' : ''}" id="btn-next">
+        ${estado.metodoPago === 'mercadopago'
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg> Pagar con Mercado Pago'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7l8-4 8 4M4 7v10h16V7"/></svg> Continuar con transferencia'}
+      </button>
+    </div>
+    <div class="co-err" id="err"></div>
+  `;
 }
 
 function render() {
   const sub = subtotal();
-
-  const deptOptions = DEPARTAMENTOS.map(d =>
-    `<option value="${d}" ${envioSeleccionado === 'montevideo' && d === 'Montevideo' ? 'selected' : ''}>${d}</option>`
-  ).join('');
+  let panel = '';
+  if (estado.paso === 1) panel = panelDatos();
+  else if (estado.paso === 2) panel = panelEnvio();
+  else if (estado.paso === 3) panel = panelPago();
+  else panel = panelConfirmar();
 
   $('#main').innerHTML = `
     <div class="co-wrap">
       <div class="co-col">
-        <div class="co-head">
-          <h1>Finalizar compra</h1>
-          <p>Completá los datos y elegí cómo preferís pagar. Son 3 minutos.</p>
-        </div>
-
-        <!-- 1. Datos -->
-        <section class="card">
-          <div class="card-head">
-            <div class="step-n">1</div>
-            <div class="step-txt">
-              <div class="t">Datos de contacto</div>
-              <div class="st">Para avisarte del estado del pedido</div>
-            </div>
-          </div>
-          <form id="form-co" onsubmit="event.preventDefault(); return false;">
-            <div class="row">
-              <div class="field">
-                <label>Nombre</label>
-                <input type="text" name="nombre" required>
-              </div>
-              <div class="field">
-                <label>Apellido <span class="opt">(opcional)</span></label>
-                <input type="text" name="apellido">
-              </div>
-            </div>
-            <div class="row">
-              <div class="field">
-                <label>Correo</label>
-                <input type="email" name="email" required placeholder="tu@correo.com">
-              </div>
-              <div class="field">
-                <label>Teléfono</label>
-                <input type="tel" name="telefono" required placeholder="099 000 000">
-              </div>
-            </div>
-            <div class="field">
-              <label>Documento <span class="opt">(opcional, CI)</span></label>
-              <input type="text" name="documento" placeholder="1.234.567-8">
-            </div>
-          </form>
-        </section>
-
-        <!-- 2. Envío -->
-        <section class="card">
-          <div class="card-head">
-            <div class="step-n">2</div>
-            <div class="step-txt">
-              <div class="t">Envío</div>
-              <div class="st">Elegí a dónde lo mandamos</div>
-            </div>
-          </div>
-          <div class="opts">
-            ${opciones.map(op => `
-              <label class="opt ${envioSeleccionado === op.id ? 'on' : ''}" data-env="${op.id}">
-                <div class="radio"></div>
-                <div class="info">
-                  <div class="nom">${esc(op.nombre)}</div>
-                  <div class="det">${esc(op.detalle)}</div>
-                </div>
-                <div class="meta ok">A coordinar</div>
-              </label>`).join('')}
-          </div>
-          <div class="nota">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
-            <span>El costo del envío va a cargo del comprador. Se paga al retirar en la agencia o al delivery.</span>
-          </div>
-
-          ${envioSeleccionado === 'interior' ? `
-            <div style="margin-top:22px">
-              <label style="display:block;font-size:13px;font-weight:500;margin-bottom:10px;color:var(--co-text)">¿Cómo preferís recibir el envío?</label>
-              <div class="sub-opts">
-                <div class="sub-opt ${modalidadInterior === 'domicilio' ? 'on' : ''}" data-mod="domicilio">
-                  <div class="nom">Envío a domicilio</div>
-                  <div class="det">Hasta la puerta de tu casa</div>
-                </div>
-                <div class="sub-opt ${modalidadInterior === 'agencia' ? 'on' : ''}" data-mod="agencia">
-                  <div class="nom">Retiro en agencia</div>
-                  <div class="det">DAC — más económico</div>
-                </div>
-              </div>
-            </div>
-          ` : ''}
-
-          <div style="margin-top:18px">
-            <div class="row">
-              <div class="field">
-                <label>Departamento</label>
-                <select name="depto" required>
-                  <option value="">Elegir…</option>
-                  ${deptOptions}
-                </select>
-              </div>
-              <div class="field">
-                <label>Ciudad o localidad</label>
-                <input type="text" name="ciudad" required placeholder="Pocitos, Punta del Este…">
-              </div>
-            </div>
-
-            ${envioSeleccionado !== 'interior' || modalidadInterior === 'domicilio' ? `
-              <div class="row">
-                <div class="field">
-                  <label>Calle y número</label>
-                  <input type="text" name="calle" required placeholder="Av. Italia 1234">
-                </div>
-                <div class="field">
-                  <label>Apto / piso <span class="opt">(opcional)</span></label>
-                  <input type="text" name="apto" placeholder="Apto 402">
-                </div>
-              </div>
-              <div class="row">
-                <div class="field">
-                  <label>Barrio <span class="opt">(opcional)</span></label>
-                  <input type="text" name="barrio">
-                </div>
-                <div class="field">
-                  <label>Código postal <span class="opt">(opcional)</span></label>
-                  <input type="text" name="cp">
-                </div>
-              </div>
-            ` : `
-              <div class="field">
-                <label>Agencia DAC más cercana</label>
-                <input type="text" name="agencia" required placeholder="Nombre o ciudad de la agencia">
-              </div>
-            `}
-          </div>
-        </section>
-
-        <!-- 3. Pago -->
-        <section class="card">
-          <div class="card-head">
-            <div class="step-n">3</div>
-            <div class="step-txt">
-              <div class="t">Método de pago</div>
-              <div class="st">Elegí cómo preferís pagar</div>
-            </div>
-          </div>
-          <div class="opts">
-            <label class="opt ${metodoPago === 'mercadopago' ? 'on' : ''}" data-pago="mercadopago">
-              <div class="radio"></div>
-              <div class="info">
-                <div class="nom">Mercado Pago</div>
-                <div class="det">Tarjetas de crédito, débito, Mercado Pago</div>
-              </div>
-              <div class="meta" style="color:var(--co-gold-d)">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/>
-                </svg>
-              </div>
-            </label>
-            <label class="opt ${metodoPago === 'transferencia' ? 'on' : ''}" data-pago="transferencia">
-              <div class="radio"></div>
-              <div class="info">
-                <div class="nom">Transferencia bancaria</div>
-                <div class="det">Te damos los datos y coordinamos por WhatsApp</div>
-              </div>
-              <div class="meta" style="color:var(--co-gold-d)">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M4 7l8-4 8 4M4 7v11h16V7M4 7h16M9 11v4M15 11v4"/>
-                </svg>
-              </div>
-            </label>
-          </div>
-        </section>
-
-        <!-- 4. Nota -->
-        <section class="card">
-          <div class="card-head">
-            <div class="step-n">4</div>
-            <div class="step-txt">
-              <div class="t">Mensaje <span style="color:var(--co-mute);font-size:13px;font-weight:400">(opcional)</span></div>
-              <div class="st">Si es para regalo, horario, lo que necesites</div>
-            </div>
-          </div>
-          <textarea name="nota" id="nota" placeholder="Es para regalo, llegar antes del jueves…"></textarea>
-        </section>
+        ${stepperHtml()}
+        ${panel}
       </div>
-
       <aside class="co-resumen">
         <h3>Tu pedido</h3>
         <div class="co-items">
-          ${cart.map(i => `
+          ${estado.cart.map(i => `
             <div class="co-item">
               <img src="${esc(i.imagen || '/img/placeholder.png')}" alt="">
               <div>
@@ -643,76 +796,70 @@ function render() {
             <span class="amt">${precio(sub)}</span>
           </div>
         </div>
-        <button type="button" class="co-pagar ${metodoPago === 'transferencia' ? 'transfer' : ''}" id="btn-pagar">
-          ${metodoPago === 'mercadopago'
-            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg> Pagar con Mercado Pago'
-            : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7l8-4 8 4M4 7v10h16V7"/></svg> Continuar con transferencia'}
-        </button>
-        <div class="co-small">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
-          ${metodoPago === 'mercadopago' ? 'Pago procesado por Mercado Pago' : 'Pago coordinado con nosotros'}
-        </div>
-        <div class="co-err" id="err"></div>
       </aside>
     </div>`;
 
-  document.querySelectorAll('[data-env]').forEach(el => {
-    el.onclick = () => { envioSeleccionado = el.dataset.env; render(); };
+  // Listeners
+  document.querySelectorAll('[data-env]').forEach(el => el.onclick = () => { estado.envioTipo = el.dataset.env; render(); });
+  document.querySelectorAll('[data-mod]').forEach(el => el.onclick = () => { estado.modalidad = el.dataset.mod; render(); });
+  document.querySelectorAll('[data-pago]').forEach(el => el.onclick = () => { estado.metodoPago = el.dataset.pago; render(); });
+  document.querySelectorAll('[data-back]').forEach(el => el.onclick = () => { guardarInputs(); estado.paso--; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.querySelectorAll('[data-edit]').forEach(el => el.onclick = () => { guardarInputs(); estado.paso = +el.dataset.edit; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.querySelectorAll('[data-goto]').forEach(el => el.onclick = () => {
+    const i = +el.dataset.goto;
+    if (i < estado.paso) { guardarInputs(); estado.paso = i; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   });
-  document.querySelectorAll('[data-mod]').forEach(el => {
-    el.onclick = () => { modalidadInterior = el.dataset.mod; render(); };
-  });
-  document.querySelectorAll('[data-pago]').forEach(el => {
-    el.onclick = () => { metodoPago = el.dataset.pago; render(); };
-  });
-  $('#btn-pagar').onclick = pagar;
+  const btn = document.getElementById('btn-next');
+  if (btn) btn.onclick = siguiente;
+}
+
+async function siguiente() {
+  guardarInputs();
+  const d = estado.datos;
+  const err = document.getElementById('err');
+  if (err) err.classList.remove('show');
+
+  if (estado.paso === 1) {
+    if (!d.nombre.trim())   return mostrarError('Escribí tu nombre');
+    if (!/\S+@\S+\.\S+/.test(d.email)) return mostrarError('Revisá el correo');
+    if (!d.telefono.trim()) return mostrarError('Dejanos un teléfono');
+    estado.paso = 2; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return;
+  }
+  if (estado.paso === 2) {
+    if (!d.depto)  return mostrarError('Elegí un departamento');
+    if (!d.ciudad.trim()) return mostrarError('Dejanos la ciudad o localidad');
+    const esAgencia = estado.envioTipo === 'interior' && estado.modalidad === 'agencia';
+    if (esAgencia && !d.agencia.trim()) return mostrarError('Decinos la agencia DAC donde retirar');
+    if (!esAgencia && !d.calle.trim())  return mostrarError('Dejanos la dirección');
+    estado.paso = 3; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return;
+  }
+  if (estado.paso === 3) {
+    estado.paso = 4; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); return;
+  }
+  // Paso 4: pagar
+  await pagar();
 }
 
 async function pagar() {
-  const form = $('#form-co');
-  const fd = new FormData(form);
-  const dir = {
-    calle: document.querySelector('[name=calle]')?.value || '',
-    apto:  document.querySelector('[name=apto]')?.value || '',
-    barrio:document.querySelector('[name=barrio]')?.value || '',
-    depto: document.querySelector('[name=depto]')?.value || '',
-    ciudad:document.querySelector('[name=ciudad]')?.value || '',
-    cp:    document.querySelector('[name=cp]')?.value || '',
-    agencia: document.querySelector('[name=agencia]')?.value || ''
-  };
-  const nota = document.querySelector('[name=nota]')?.value || '';
-  const err = $('#err');
-  err.classList.remove('show');
-
-  if (!fd.get('nombre'))   return mostrarError('Escribí tu nombre');
-  if (!fd.get('email'))    return mostrarError('Escribí tu correo');
-  if (!fd.get('telefono')) return mostrarError('Dejanos un teléfono');
-  if (!dir.depto)          return mostrarError('Elegí un departamento');
-  if (!dir.ciudad)         return mostrarError('Dejanos la ciudad o localidad');
-  const esAgencia = envioSeleccionado === 'interior' && modalidadInterior === 'agencia';
-  if (esAgencia && !dir.agencia) return mostrarError('Decinos la agencia DAC donde retirar');
-  if (!esAgencia && !dir.calle)  return mostrarError('Dejanos la dirección');
-
-  const btn = $('#btn-pagar');
+  const btn = document.getElementById('btn-next');
   btn.disabled = true;
   btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Procesando…';
+
+  const d = estado.datos;
+  const dir = { calle: d.calle, apto: d.apto, barrio: d.barrio, depto: d.depto, ciudad: d.ciudad, cp: d.cp, agencia: d.agencia };
 
   try {
     const r = await fetch('/api/checkout/preferencia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nombre: fd.get('nombre'),
-        apellido: fd.get('apellido'),
-        email: fd.get('email'),
-        telefono: fd.get('telefono'),
-        documento: fd.get('documento'),
-        envio_tipo: envioSeleccionado,
-        envio_modalidad: envioSeleccionado === 'interior' ? modalidadInterior : '',
-        direccion: dir,
-        metodo_pago: metodoPago,
-        nota,
-        items: cart.map(i => ({ slug: i.slug, cantidad: i.cantidad || 1 }))
+        nombre: d.nombre, apellido: d.apellido,
+        email: d.email, telefono: d.telefono, documento: d.documento,
+        envio_tipo: estado.envioTipo,
+        envio_modalidad: estado.envioTipo === 'interior' ? estado.modalidad : '',
+        direccion: dir, metodo_pago: estado.metodoPago,
+        nota: d.nota,
+        items: estado.cart.map(i => ({ slug: i.slug, cantidad: i.cantidad || 1 }))
       })
     });
     const data = await r.json();
@@ -724,7 +871,7 @@ async function pagar() {
     if (data.redirect) { location.href = data.redirect; return; }
     if (data.sin_mp) {
       const msg = encodeURIComponent(
-        `Hola Merfina, armé el pedido #${data.pedido_numero} por ${precio(data.total)} y quería coordinar el pago. Mi mail: ${fd.get('email')}`);
+        `Hola Merfina, armé el pedido #${data.pedido_numero} por ${precio(data.total)} y quería coordinar el pago. Mi mail: ${d.email}`);
       location.href = `https://wa.me/59891900341?text=${msg}`;
       return;
     }
@@ -737,7 +884,13 @@ async function pagar() {
 }
 
 function mostrarError(msg) {
-  const err = $('#err');
+  let err = document.getElementById('err');
+  if (!err) {
+    err = document.createElement('div');
+    err.id = 'err';
+    err.className = 'co-err';
+    document.querySelector('.co-col').appendChild(err);
+  }
   err.textContent = msg;
   err.classList.add('show');
   err.scrollIntoView({ behavior: 'smooth', block: 'center' });

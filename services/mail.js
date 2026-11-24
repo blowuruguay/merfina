@@ -60,7 +60,7 @@ function precio(n) {
 }
 
 // ============================================================
-// Plantilla base — misma estética que la web (cream + gold + Cormorant)
+// Plantilla base al cliente (cream + gold + Cormorant)
 // ============================================================
 function wrap({ preHeader, titulo, cuerpoHtml }) {
   return `
@@ -78,16 +78,14 @@ function wrap({ preHeader, titulo, cuerpoHtml }) {
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e6ddcf">
 
-        <!-- Logo -->
-        <tr><td align="center" style="padding:36px 28px 18px">
-          <div style="font-family:Georgia,serif;font-size:20px;letter-spacing:.32em;color:#8F7349">MERFINA</div>
+        <tr><td align="center" style="padding:38px 28px 20px">
+          <img src="https://merfina.uy/img/logo-gold.png" alt="Merfina" width="40" style="display:block;margin:0 auto 10px;height:auto">
+          <div style="font-family:Georgia,serif;font-size:14px;letter-spacing:.42em;color:#8F7349">MERFINA</div>
           <div style="height:1px;background:#e6ddcf;margin:18px auto 0;width:48px"></div>
         </td></tr>
 
-        <!-- Cuerpo -->
         ${cuerpoHtml}
 
-        <!-- Footer -->
         <tr><td style="padding:36px 32px 32px;border-top:1px solid #e6ddcf;background:#FBF7F0">
           <div style="font-family:Georgia,serif;font-size:11px;letter-spacing:.3em;color:#8F7349;text-transform:uppercase;text-align:center;margin-bottom:12px">Merfina Joyas</div>
           <div style="text-align:center;font-size:13px;color:#6a6054;line-height:1.7">
@@ -99,6 +97,58 @@ function wrap({ preHeader, titulo, cuerpoHtml }) {
           </div>
           <div style="text-align:center;font-size:11px;color:#a39a8c;margin-top:16px;letter-spacing:.15em">
             Montevideo, Uruguay
+          </div>
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+// ============================================================
+// Plantilla INTERNA (más ejecutiva, para que Merfina actúe rápido)
+// Mantiene la paleta pero densifica info: badge dorado, datos en
+// grilla, CTAs claros.
+// ============================================================
+function wrapInterno({ preHeader, titulo, badge, cuerpoHtml }) {
+  return `
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(titulo)}</title>
+</head>
+<body style="margin:0;padding:0;background:#F3EADA;font-family:'Cormorant Garamond',Georgia,serif;color:#2B251E;-webkit-text-size-adjust:none">
+  <span style="display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0">${esc(preHeader || '')}</span>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F3EADA;padding:32px 12px">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:620px;background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 20px -8px rgba(60,40,10,.15)">
+
+        <!-- Header oscuro con logo -->
+        <tr><td style="background:#141210;padding:30px 36px 28px;text-align:center">
+          <img src="https://merfina.uy/img/logo-cream.png" alt="Merfina" width="36" style="display:block;margin:0 auto 10px;height:auto">
+          <div style="font-family:Georgia,serif;font-size:13px;letter-spacing:.42em;color:#C9A979">MERFINA</div>
+          <div style="font-size:10px;letter-spacing:.3em;color:#8B7E6A;text-transform:uppercase;margin-top:6px">Panel · aviso interno</div>
+        </td></tr>
+
+        <!-- Badge dorado (opcional) -->
+        ${badge ? `
+        <tr><td align="center" style="padding:28px 36px 0">
+          <div style="display:inline-block;padding:7px 18px;background:#F3EADA;border:1px solid #d6c8ad;border-radius:999px;font-family:Arial,sans-serif;font-size:10.5px;letter-spacing:.32em;color:#8F7349;text-transform:uppercase;font-weight:600">${esc(badge)}</div>
+        </td></tr>` : ''}
+
+        ${cuerpoHtml}
+
+        <!-- Footer interno -->
+        <tr><td style="padding:24px 32px 28px;border-top:1px solid #e6ddcf;background:#FBF7F0;text-align:center">
+          <div style="font-family:Georgia,serif;font-size:10.5px;letter-spacing:.3em;color:#8F7349;text-transform:uppercase;margin-bottom:8px">Merfina Joyas · Panel interno</div>
+          <div style="font-size:11px;color:#a39a8c;line-height:1.5">
+            Este aviso lo recibís como administrador de merfina.uy.<br>
+            Para gestionar pedidos, entrá al <a href="https://admin.merfina.uy" style="color:#8F7349;text-decoration:none">panel</a>.
           </div>
         </td></tr>
 
