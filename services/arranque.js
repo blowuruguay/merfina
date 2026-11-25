@@ -100,6 +100,29 @@ async function crearAdmin() {
   console.log(`[arranque] Usuario del panel listo: ${rows[0].email}`);
 }
 
+async function asignarPreciosCorbatas() {
+  // Precios finales de corbatas, pedidos por la dueña.
+  // Idempotente: solo actualiza si el precio actual sigue siendo el
+  // genérico de seed (100). Si ya se editó desde el panel, no se pisa.
+  const precios = {
+    'corbata-lila':  1200,
+    'corbata-gala':  1300,
+    'corbata-ambar': 1500,
+    'corbata-cleo':  1500,
+    'corbata-nina':  1200,
+    'corbata-moka':  1200
+  };
+  let cambios = 0;
+  for (const [slug, precio] of Object.entries(precios)) {
+    const r = await db.query(
+      `update productos set precio = $1
+        where slug = $2 and precio = 100`,
+      [precio, slug]);
+    if (r.rowCount > 0) cambios++;
+  }
+  if (cambios > 0) console.log(`[arranque] Precios de corbatas asignados: ${cambios}`);
+}
+
 async function sincronizarPrecioStockInicial() {
   // Productos del seed inicial que siguen en precio=0 y stock=1
   // (estado virgen de la primera importación): les pasa a precio 100
@@ -266,6 +289,7 @@ async function preparar() {
     await sincronizarDescripciones();
     await corregirDescripcionesSeed();
     await sincronizarPrecioStockInicial();
+    await asignarPreciosCorbatas();
     estado.ok = true;
   } catch (err) {
     console.error('[arranque] Falló:', err.message);
