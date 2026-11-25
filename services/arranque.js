@@ -119,6 +119,31 @@ async function sincronizarPrecioStockInicial() {
   if (r.rowCount > 0) console.log(`[arranque] Precio/stock inicial aplicado a ${r.rowCount} productos`);
 }
 
+async function corregirDescripcionesSeed() {
+  // Correcciones puntuales de descripciones del seed inicial.
+  // Solo actualiza cuando la descripción en base coincide EXACTO con la
+  // vieja: así, si la dueña ya la editó desde el panel, no se le pisa.
+  const correcciones = [
+    {
+      slug: 'amapola',
+      vieja: 'Un rojo que no pide permiso. Flor rebelde y femenina, lista para transformar una camisa blanca en un gesto de autor.',
+      nueva: 'Flor color granate, con detalles dorados y perla central. Aporta un toque de distinción y feminidad a cualquier camisa.'
+    },
+    {
+      slug: 'corbata-nina',
+      vieja: 'Un gesto dulce, femenino, con alma de niña bien. Para quien quiere elegancia con una sonrisa.',
+      nueva: 'Un gesto dulce, femenino, con alma de niña. Para quien quiere elegancia con una sonrisa.'
+    }
+  ];
+  for (const c of correcciones) {
+    const r = await db.query(
+      `update productos set descripcion = $1
+        where slug = $2 and descripcion = $3`,
+      [c.nueva, c.slug, c.vieja]);
+    if (r.rowCount > 0) console.log(`[arranque] Descripción corregida: ${c.slug}`);
+  }
+}
+
 async function sincronizarDescripciones() {
   // Para los productos del seed inicial que ya están en la base con
   // descripción vacía, les carga la descripción del catalogo-inicial.json.
@@ -239,6 +264,7 @@ async function preparar() {
     await limpiarCategorias();
     await migrarCamposPedidos();
     await sincronizarDescripciones();
+    await corregirDescripcionesSeed();
     await sincronizarPrecioStockInicial();
     estado.ok = true;
   } catch (err) {
