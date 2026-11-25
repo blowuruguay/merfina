@@ -567,11 +567,11 @@ section{padding:130px 56px;position:relative}
 }
 /* Cada tile muestra un uso distinto de la pieza: el label debe
    describir lo que se ve en la foto. */
-.tile1 .bg{background:url('/img/look-1.jpg') center/cover no-repeat}  /* principal */
+.tile1 .bg{background:url('/img/look-camisas.jpg') center/cover no-repeat}  /* En camisas */
 .tile2 .bg{background:url('/img/look-2.jpg') center/cover no-repeat}  /* En los puños */
 .tile3 .bg{background:url('/img/look-4.jpg') center/cover no-repeat}  /* Con corbata */
 .tile4 .bg{background:url('/img/look-3.jpg') center/cover no-repeat}  /* En la tapeta */
-.tile5 .bg{background:url('/img/look-5.jpg') center/cover no-repeat}  /* En las manos */
+.tile5 .bg{background:url('/img/look-1.jpg') center/cover no-repeat}  /* En las manos (era La pieza del día) */
 .look-tile .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent 55%);pointer-events:none}
 
 /* ============ FEATURES ============ */
