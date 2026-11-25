@@ -547,11 +547,14 @@ section{padding:130px 56px;position:relative}
 }
 .look-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(6,1fr);
   gap:16px;
   max-width:1320px;
   margin:0 auto;
 }
+.look-grid .look-tile{grid-column:span 2}
+.look-grid .look-tile:nth-child(4),
+.look-grid .look-tile:nth-child(5){grid-column:span 3}
 .look-tile{position:relative;overflow:hidden;background:#2a2622;aspect-ratio:4/5}
 .look-tile .bg{position:absolute;inset:0}
 .look-tile .lbl{
@@ -569,7 +572,6 @@ section{padding:130px 56px;position:relative}
 .tile2 .bg{background:url('/img/look-2.jpg') center/cover no-repeat}  /* En los puños */
 .tile3 .bg{background:url('/img/look-4.jpg') center/cover no-repeat}  /* Con corbata */
 .tile4 .bg{background:url('/img/look-3.jpg') center/cover no-repeat}  /* En la tapeta */
-.tile5 .bg{background:url('/img/look-1.jpg') center/cover no-repeat}  /* En las manos */
 .tile6 .bg{background:url('/img/look-blazer.jpg') center/cover no-repeat}  /* En blazer */
 .look-tile .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent 55%);pointer-events:none}
 
@@ -1057,6 +1059,8 @@ body.menu-open{overflow:hidden}
   .lookbook-head{flex-direction:column;align-items:center;gap:14px;text-align:center}
   .lookbook-head h2{font-size:clamp(28px,7vw,44px)}
   .look-grid{grid-template-columns:repeat(2,1fr) !important;gap:8px}
+  .look-grid .look-tile{grid-column:auto !important}
+  .look-grid .look-tile:nth-child(5){grid-column:1 / -1 !important}
   .look-tile.tall{grid-row:auto}
   .look-tile{aspect-ratio:3/4}
 
