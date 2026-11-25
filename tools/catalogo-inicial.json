@@ -230,5 +230,20 @@
       "/img/productos/corbata-nina/2.jpg"
     ],
     "descripcion": "Un gesto dulce, femenino, con alma de niña bien. Para quien quiere elegancia con una sonrisa."
+  },
+  {
+    "slug": "perla",
+    "nombre": "Perla",
+    "categoria_id": "cubre-botones",
+    "precio": 100,
+    "stock": 10,
+    "activo": true,
+    "destacado": false,
+    "imagenes": [
+      "/img/productos/perla/1.jpg",
+      "/img/productos/perla/2.jpg",
+      "/img/productos/perla/3.jpg"
+    ],
+    "descripcion": "Un racimo de perlas que se posa en el puño como si siempre hubiera estado ahí. Clásica sin ser previsible, prolija sin ser rígida: la pieza que acomoda cualquier camisa y te acompaña del almuerzo al after."
   }
 ]

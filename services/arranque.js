@@ -112,7 +112,7 @@ async function sincronizarPrecioStockInicial() {
         and stock = 1`,
     [[
       'alma','amapola','dalia-celeste','ebano','felino','gardenia',
-      'latido','magnolia','nazar','noir','dalia-rosa',
+      'latido','magnolia','nazar','noir','dalia-rosa','perla',
       'corbata-cleo','corbata-ambar','corbata-gala','corbata-lila',
       'corbata-moka','corbata-nina'
     ]]);
@@ -141,6 +141,41 @@ async function sincronizarDescripciones() {
   if (actualizados > 0) {
     console.log(`[arranque] Descripciones sincronizadas: ${actualizados}`);
   }
+}
+
+async function sincronizarProductosNuevos() {
+  // Inserta en la base los productos del catalogo-inicial.json que
+  // todavía no existan por slug. Idempotente: no toca los existentes
+  // (ni precio, ni stock, ni descripción). Sirve para sumar productos
+  // nuevos al seed después de la primera importación.
+  const ruta = path.join(__dirname, '../tools/catalogo-inicial.json');
+  if (!fs.existsSync(ruta)) return;
+  const datos = JSON.parse(fs.readFileSync(ruta, 'utf8'));
+  let agregados = 0;
+  for (const p of datos) {
+    const { rows } = await db.query(
+      `select id from productos where slug = $1`, [p.slug]);
+    if (rows.length > 0) continue;
+    await db.transaccion(async cli => {
+      const { rows: r } = await cli.query(
+        `insert into productos (slug, nombre, categoria_id, precio, descripcion,
+                                materiales, medidas, stock, destacado, activo)
+         values ($1,$2,$3,$4,$5,$6,$7,$8,coalesce($9,false),coalesce($10,true))
+         returning id`,
+        [p.slug, p.nombre, p.categoria_id, p.precio || 0, p.descripcion || null,
+         p.materiales || null, p.medidas || null, p.stock || 1,
+         p.destacado, p.activo]);
+      const id = r[0].id;
+      for (let i = 0; i < (p.imagenes || []).length; i++) {
+        await cli.query(
+          `insert into producto_imagenes (producto_id, url, alt, orden)
+           values ($1,$2,$3,$4)`,
+          [id, p.imagenes[i], p.nombre, i]);
+      }
+    });
+    agregados++;
+  }
+  if (agregados > 0) console.log(`[arranque] Productos nuevos del seed agregados: ${agregados}`);
 }
 
 async function migrarCamposPedidos() {
@@ -200,6 +235,7 @@ async function preparar() {
     await migrar();
     await crearAdmin();
     await importarCatalogo();
+    await sincronizarProductosNuevos();
     await limpiarCategorias();
     await migrarCamposPedidos();
     await sincronizarDescripciones();
