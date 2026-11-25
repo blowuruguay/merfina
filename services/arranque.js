@@ -100,6 +100,21 @@ async function crearAdmin() {
   console.log(`[arranque] Usuario del panel listo: ${rows[0].email}`);
 }
 
+async function asignarPreciosCubrebotones() {
+  // Precio final de cubrebotones: $1800 el par (set x2).
+  // Idempotente: solo actualiza si el precio actual sigue siendo el
+  // genérico de seed (100). Si ya se editó desde el panel, no se pisa.
+  const slugs = [
+    'alma','amapola','dalia-celeste','dalia-rosa','ebano','felino',
+    'gardenia','latido','magnolia','nazar','noir','perla'
+  ];
+  const r = await db.query(
+    `update productos set precio = 1800
+      where slug = any($1) and precio = 100`,
+    [slugs]);
+  if (r.rowCount > 0) console.log(`[arranque] Precios de cubrebotones asignados: ${r.rowCount}`);
+}
+
 async function asignarPreciosCorbatas() {
   // Precios finales de corbatas, pedidos por la dueña.
   // Idempotente: solo actualiza si el precio actual sigue siendo el
@@ -289,6 +304,7 @@ async function preparar() {
     await sincronizarDescripciones();
     await corregirDescripcionesSeed();
     await sincronizarPrecioStockInicial();
+    await asignarPreciosCubrebotones();
     await asignarPreciosCorbatas();
     estado.ok = true;
   } catch (err) {
