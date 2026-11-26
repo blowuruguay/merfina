@@ -1023,22 +1023,22 @@ body.menu-open{overflow:hidden}
       linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,.1) 55%,transparent 75%) !important;
   }
   .hero-overlay{
-    padding:0 28px env(safe-area-inset-bottom,0px) !important;
+    padding:0 28px calc(44px + env(safe-area-inset-bottom,0px)) !important;
     text-align:center;
-    justify-content:center;
+    justify-content:flex-end;
     gap:0;
   }
   .hero-eyebrow{
     font-size:9px;
     letter-spacing:.42em;
-    margin-bottom:22px;
+    margin-bottom:18px;
     opacity:.92;
   }
   .hero-title{
-    font-size:clamp(38px,10vw,58px) !important;
+    font-size:clamp(36px,9.2vw,54px) !important;
     line-height:1.02;
     white-space:normal;
-    margin-bottom:36px;
+    margin-bottom:26px;
     letter-spacing:-.005em;
   }
   .hero-ctas{
@@ -1118,9 +1118,46 @@ body.menu-open{overflow:hidden}
   .look-tile.tall{grid-row:auto}
   .look-tile{aspect-ratio:3/4}
 
-  /* FEATURES */
-  .features{padding:60px 22px !important}
-  .features-grid{grid-template-columns:1fr 1fr !important;gap:22px}
+  /* FEATURES — icono y texto en línea, compacto */
+  .features{padding:50px 22px !important}
+  .features-grid{
+    grid-template-columns:1fr !important;
+    gap:0 !important;
+    padding-bottom:40px !important;
+    max-width:520px;
+  }
+  .feature{
+    display:grid !important;
+    grid-template-columns:48px 1fr;
+    column-gap:18px;
+    row-gap:4px;
+    align-items:start;
+    text-align:left !important;
+    padding:20px 0 !important;
+    border-bottom:1px solid var(--line);
+  }
+  .feature:last-child{border-bottom:0}
+  .feature svg{
+    width:28px !important;height:28px !important;
+    margin:4px 0 0 !important;
+    grid-column:1;
+    grid-row:1 / span 2;
+    align-self:start;
+  }
+  .feature h3{
+    font-size:18px !important;
+    margin:0 !important;
+    grid-column:2;
+    line-height:1.2;
+  }
+  .feature p{
+    font-size:13px !important;
+    text-align:left !important;
+    max-width:none !important;
+    margin:0 !important;
+    grid-column:2;
+    line-height:1.55;
+  }
   .feature-card{padding:22px 16px}
   .feature-card h4{font-size:12px}
   .feature-card p{font-size:12px}
@@ -1150,22 +1187,25 @@ body.menu-open{overflow:hidden}
   .news-check{flex-direction:column;gap:14px;text-align:center;margin-top:24px}
   .news-check label{font-size:11px}
 
-  /* FOOTER */
-  footer{padding:60px 22px 30px !important;text-align:center}
-  .footer-logo{margin-bottom:40px}
-  .footer-brand{gap:14px}
-  .footer-logo img.logo-monogram.xl{height:46px}
+  /* FOOTER — compacto */
+  footer{padding:40px 22px 24px !important;text-align:center}
+  .footer-logo{margin-bottom:28px}
+  .footer-brand{gap:10px}
+  .footer-logo img.logo-monogram.xl{height:34px}
+  .footer-logo .logo-word.big{font-size:18px;letter-spacing:.32em}
+  .footer-dot{width:7px;height:7px;margin:14px auto 0}
   .footer-grid{
     grid-template-columns:1fr 1fr !important;
-    gap:36px 20px;
+    gap:26px 20px;
     text-align:left;
-    padding:0 6px;
+    padding:28px 4px 0;
   }
-  .footer-col h5{font-size:10px;letter-spacing:.32em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
-  .footer-col ul{gap:10px !important}
-  .footer-col ul li{font-size:14px}
-  .footer-col ul li a{display:inline-block;padding:3px 0}
-  .footer-bottom{font-size:10.5px;letter-spacing:.2em;flex-direction:column;gap:8px;padding-top:36px;margin-top:40px;border-top:1px solid var(--line)}
+  .footer-col h5{font-size:9.5px;letter-spacing:.28em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .footer-col ul{gap:8px !important}
+  .footer-col ul li{font-size:13.5px;line-height:1.35}
+  .footer-col ul li a{display:inline-block;padding:2px 0}
+  .footer-bottom{font-size:10px;letter-spacing:.18em;flex-direction:column;gap:6px;padding-top:22px;margin-top:26px;border-top:1px solid var(--line)}
+  .footer-tagline{font-size:13px}
 
   /* WhatsApp no tape el newsletter submit */
   .news-form .sub{margin-bottom:60px}
@@ -1506,14 +1546,10 @@ html, body { overflow-x: hidden; }
   .pdp-meta label { font-size: 9px !important; letter-spacing: .25em !important; }
 }
 
-/* Footer: links más tocables */
+/* Footer: links más tocables (compacto para mobile) */
 @media (max-width: 640px) {
-  footer { padding: 70px 24px 36px !important; }
-  .footer-grid { gap: 36px !important; }
-  .footer-col ul li { padding: 4px 0; }
-  .footer-col ul a { display: inline-block; padding: 4px 0; min-height: 28px; }
-  .footer-bottom { font-size: 10px !important; padding-top: 32px; margin-top: 50px; }
-  .footer-logo { margin-bottom: 50px; }
+  .footer-col ul li { padding: 2px 0; }
+  .footer-col ul a { display: inline-block; padding: 3px 0; min-height: 26px; }
 }
 
 /* Tooltip favoritos: posición inferior en mobile para que no tape */
