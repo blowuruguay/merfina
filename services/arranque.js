@@ -250,10 +250,10 @@ async function migrarCamposPedidos() {
 
     // Ajustes bancarios default (si no existen)
     const defaults = {
-      banco_nombre:   'Itaú',
-      banco_titular:  'Merfina Joyas',
-      banco_cuenta:   '1234567',
-      banco_sucursal: '00',
+      banco_nombre:   'BROU',
+      banco_titular:  'Mercedes',
+      banco_cuenta:   'CA 001220510-00003',
+      banco_sucursal: '',
       banco_rut:      '',
       banco_email:    'hola@merfina.uy'
     };
@@ -265,6 +265,26 @@ async function migrarCamposPedidos() {
     }
   } catch (err) {
     console.log('[arranque] migración de pedidos saltada:', err.message);
+  }
+}
+
+async function corregirDatosBancarios() {
+  // Reemplaza los datos bancarios placeholder (Itaú de ejemplo) por los
+  // reales de BROU/Mercedes. Idempotente: solo actualiza cada clave si
+  // su valor sigue siendo el placeholder original. Si ya se editó desde
+  // el panel, no se pisa.
+  const correcciones = [
+    { clave: 'banco_nombre',   viejo: 'Itaú',          nuevo: 'BROU' },
+    { clave: 'banco_titular',  viejo: 'Merfina Joyas', nuevo: 'Mercedes' },
+    { clave: 'banco_cuenta',   viejo: '1234567',       nuevo: 'CA 001220510-00003' },
+    { clave: 'banco_sucursal', viejo: '00',            nuevo: '' }
+  ];
+  for (const c of correcciones) {
+    const r = await db.query(
+      `update ajustes set valor = $1
+        where clave = $2 and valor = $3`,
+      [JSON.stringify(c.nuevo), c.clave, JSON.stringify(c.viejo)]);
+    if (r.rowCount > 0) console.log(`[arranque] Dato bancario actualizado: ${c.clave}`);
   }
 }
 
@@ -301,6 +321,7 @@ async function preparar() {
     await sincronizarProductosNuevos();
     await limpiarCategorias();
     await migrarCamposPedidos();
+    await corregirDatosBancarios();
     await sincronizarDescripciones();
     await corregirDescripcionesSeed();
     await sincronizarPrecioStockInicial();

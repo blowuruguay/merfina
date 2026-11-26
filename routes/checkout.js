@@ -186,9 +186,9 @@ router.get('/datos-banco', async (req, res) => {
     const d = await leerAjustes(
       ['banco_nombre','banco_titular','banco_cuenta','banco_sucursal','banco_rut','banco_email']);
     res.json({
-      banco:    d.banco_nombre   || 'Itaú',
-      titular:  d.banco_titular  || 'Merfina Joyas',
-      cuenta:   d.banco_cuenta   || '—',
+      banco:    d.banco_nombre   || 'BROU',
+      titular:  d.banco_titular  || 'Mercedes',
+      cuenta:   d.banco_cuenta   || 'CA 001220510-00003',
       sucursal: d.banco_sucursal || '',
       rut:      d.banco_rut      || '',
       email:    d.banco_email    || ''
